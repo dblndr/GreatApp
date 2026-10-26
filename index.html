@@ -253,6 +253,22 @@ function nextQ(mode, st, rnd, lastKey){
     if(q.key!==lastKey || i===11) return q;
   }
 }
+// Tag-Buttons mischen (Fisher-Yates). Mo–So, eine Rotation davon (z. B. Mi–Di) oder die rückwärts
+// gelesene Woche verraten Vorgänger/Nachfolger und werden verworfen, ebenso die Reihenfolge der vorigen Aufgabe.
+function isWeekSequence(order){
+  if(order.length!==7) return false;
+  const fwd = order.every((d,k)=>d===mod7(order[0]+k)), back = order.every((d,k)=>d===mod7(order[0]-k));
+  return fwd || back;
+}
+function shuffleDays(rnd, prev){
+  rnd = rnd || Math.random;
+  for(let t=0;t<100;t++){
+    const o=[0,1,2,3,4,5,6];
+    for(let i=o.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [o[i],o[j]]=[o[j],o[i]]; }
+    if(!isWeekSequence(o) && !(prev && prev.join()===o.join())) return o;
+  }
+  return [0,3,6,2,5,1,4]; // Notfall (nur bei defektem Zufall): feste, nicht ablesbare Reihenfolge
+}
 function starsFor(correct, total){ const p = total ? correct/total : 0; return p>=0.9 ? 3 : p>=0.7 ? 2 : p>=0.4 ? 1 : 0; }
 
 // ---------- Datum / Zustand ----------
@@ -382,7 +398,8 @@ function nextQuestion(){
   $("speakBtn").classList.toggle("hidden", !canSpeak());
   if(q.kind==="tag"){
     $("mathArea").classList.add("hidden");
-    $("answerArea").innerHTML = `<div class="days">${TAGE.map((t,k)=>`<button type="button" data-day="${k}">${t}</button>`).join("")}</div>`;
+    round.dayOrder = shuffleDays(Math.random, round.dayOrder);
+    $("answerArea").innerHTML = `<div class="days">${round.dayOrder.map(k=>`<button type="button" data-day="${k}">${TAGE[k]}</button>`).join("")}</div>`;
   } else {
     $("mathArea").classList.remove("hidden"); renderDisplay();
     $("answerArea").innerHTML = `<div class="pad">${[1,2,3,4,5,6,7,8,9].map(d=>`<button type="button" data-key="${d}">${d}</button>`).join("")}<button type="button" class="del" data-key="del" aria-label="Löschen">⌫</button><button type="button" data-key="0">0</button><button type="button" class="okk" data-key="ok">OK</button></div>`;
@@ -471,7 +488,7 @@ function say(text){
 }
 $("speakBtn").onclick = ()=>{ if(round && round.q) say(round.q.say.replace(/·/g," mal ")); };
 
-window.UA = {TAGE, FOCUS, FOCUS_BASE, FOCUS_KEYS, OTHER_PLUS, shiftDay, dayPath, dayLevel, makeDayQ, makePlusQ, makeMalQ, nextQ, starsFor, defaultState, migrate, STORE_KEY, ROUND_LEN,
+window.UA = {TAGE, FOCUS, FOCUS_BASE, FOCUS_KEYS, OTHER_PLUS, shiftDay, dayPath, dayLevel, makeDayQ, makePlusQ, makeMalQ, nextQ, starsFor, shuffleDays, isWeekSequence, defaultState, migrate, STORE_KEY, ROUND_LEN,
   get state(){ return state; }, get round(){ return round; }, setNow:f=>{ nowFn=f||(()=>Date.now()); }, dayStreak};
 renderStart();
 </script>
