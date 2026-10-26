@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="robots" content="noindex">
+<title>Übungs-App – 2. Klasse</title>
+<style>
+:root{--bg:#eef6ff;--card:#fff;--ink:#1d2b3a;--muted:#6b7a8c;--blue:#2f7cf6;--green:#22b573;--red:#f2545b;--orange:#ff9f1c;--yellow:#ffd23f;--purple:#8a5cf6;--radius:22px}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Comic Neue",sans-serif;-webkit-text-size-adjust:100%;font-size:22px}
+body{padding:env(safe-area-inset-top) 12px calc(env(safe-area-inset-bottom) + 16px);overflow-x:hidden}
+.wrap{max-width:760px;margin:0 auto}
+header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 0 4px}
+header h1{font-size:1.15rem;margin:0;white-space:nowrap}
+button{font:inherit;border:0;border-radius:18px;padding:14px 18px;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;color:var(--ink)}
+button:active{transform:scale(.97)}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:0 6px 20px rgba(30,60,110,.10);padding:20px;margin:12px 0}
+.pill{background:#fff;border-radius:999px;padding:8px 14px;font-weight:800;box-shadow:0 2px 8px rgba(30,60,110,.08);white-space:nowrap}
+.pills{display:flex;gap:8px;align-items:center}
+.home{background:#fff;font-size:1.3rem;padding:8px 14px;box-shadow:0 2px 8px rgba(30,60,110,.08)}
+.hello{font-size:1.6rem;font-weight:800;text-align:center;margin:10px 0 4px}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mode{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:150px;font-size:1.25rem;font-weight:800;color:#fff;border-radius:24px;box-shadow:0 6px 16px rgba(30,60,110,.15)}
+.mode .i{font-size:2.8rem;line-height:1}
+.mode .s{font-size:.85rem;font-weight:700;opacity:.95}
+.m-tage{background:linear-gradient(135deg,#ff9f1c,#ff6f59)}
+.m-plus{background:linear-gradient(135deg,#22b573,#56cc9d)}
+.m-mal{background:linear-gradient(135deg,#2f7cf6,#6aa5ff)}
+.m-mix{background:linear-gradient(135deg,#8a5cf6,#c06cf0)}
+h3.t{margin:0 0 10px;font-size:1.1rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:#eef2f8;min-width:60px;padding:12px 14px;font-weight:800;font-size:1.1rem}
+.chip.on{background:var(--blue);color:#fff}
+.small{font-size:.8rem;color:var(--muted)}
+.dots{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:6px 0 2px}
+.dot{width:22px;height:22px;border-radius:50%;background:#dbe5f2}
+.dot.now{background:#fff;border:4px solid var(--blue)}
+.dot.r{background:var(--green)}
+.dot.f{background:var(--orange)}
+.qcard{text-align:center;position:relative}
+.qtag{font-size:.85rem;font-weight:800;color:var(--blue);letter-spacing:.02em}
+.prompt{font-size:1.75rem;font-weight:800;margin:10px 0;line-height:1.3}
+.prompt.math{font-size:3.4rem;letter-spacing:.02em;margin:6px 0}
+.prompt .d{color:var(--orange)}
+.display{display:inline-block;min-width:150px;font-size:3rem;font-weight:800;border:4px solid #cfdcef;border-radius:18px;padding:4px 18px;min-height:1.5em;background:#f8fbff}
+.display.empty::after{content:"?";color:#c3cfdf}
+.speak{background:var(--yellow);font-size:1.3rem;padding:8px 14px;position:absolute;top:12px;right:12px}
+.days{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.days button{font-size:1.4rem;font-weight:800;padding:18px 8px;background:#fff;border:4px solid #dbe5f2;min-height:72px}
+.days button:last-child{grid-column:1 / -1}
+.days button.right{background:#e3f8ee;border-color:var(--green)}
+.days button.wrong{background:#fff4e0;border-color:var(--orange)}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:420px;margin:0 auto}
+.pad button{font-size:2rem;font-weight:800;min-height:76px;background:#fff;border:4px solid #dbe5f2}
+.pad .del{background:#fde8e9;border-color:#f7c3c6}
+.pad .okk{background:var(--green);color:#fff;border-color:var(--green)}
+.fb{border-radius:18px;padding:16px;margin:12px 0 0;font-size:1.3rem;display:none;text-align:center}
+.fb.show{display:block}
+.fb.good{background:#e3f8ee;border:3px solid var(--green)}
+.fb.soft{background:#fff4e0;border:3px solid var(--orange)}
+.fb b{font-size:1.5rem}
+.week{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.week span{background:#eef2f8;border-radius:10px;padding:6px 8px;font-size:.85rem;font-weight:800}
+.week span.st{background:#dbe8fb;color:var(--blue)}
+.week span.go{background:#fff3c4}
+.week span.ans{background:var(--green);color:#fff}
+.next{background:var(--blue);color:#fff;font-size:1.4rem;font-weight:800;width:100%;margin-top:12px;padding:16px}
+.result{text-align:center}
+.stars{font-size:4.2rem;letter-spacing:.1em;margin:6px 0}
+.stars span{display:inline-block;filter:grayscale(1);opacity:.25}
+.stars span.on{filter:none;opacity:1;animation:pop .6s both}
+.stars span.on:nth-child(2){animation-delay:.25s}.stars span.on:nth-child(3){animation-delay:.5s}
+.big{font-size:2rem;font-weight:800}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.row>button{flex:1 1 160px;font-size:1.3rem;font-weight:800;padding:18px}
+.primary{background:var(--blue);color:#fff}
+.ghost{background:#eef2f8}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;text-align:center}
+.stats div{background:#f6f9fd;border-radius:14px;padding:10px 6px;font-size:.85rem}
+.stats b{display:block;font-size:1.5rem}
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
+.badge{background:#f6f9fd;border-radius:14px;padding:10px 4px;text-align:center;font-size:.7rem;line-height:1.25;font-weight:700}
+.badge .i{font-size:2rem;display:block;margin-bottom:2px}
+.badge.got{background:#fff8d6;border:2px solid var(--yellow)}
+.badge.off .i{filter:grayscale(1);opacity:.35}
+.badge.off{color:var(--muted)}
+.newbadge{background:#fff8d6;border:3px solid var(--yellow);border-radius:16px;padding:10px;margin-top:12px;font-weight:800}
+.hidden{display:none!important}
+.pop{animation:pop .5s}
+@keyframes pop{0%{transform:scale(.4)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+#confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:50}
+#confetti i{position:absolute;top:-30px;font-style:normal;font-size:28px;animation:fall 1.3s ease-in forwards}
+@keyframes fall{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(105vh) rotate(540deg);opacity:.2}}
+@media (prefers-reduced-motion:reduce){#confetti{display:none}.stars span.on,.pop,.shake{animation:none}}
+@media (min-width:700px){.modes{grid-template-columns:repeat(4,1fr)}.days{grid-template-columns:repeat(4,1fr)}.days button:last-child{grid-column:auto}.duo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}.duo>.card{margin:12px 0}}
+@media (max-width:480px){body.inq header h1{display:none}}
+@media (max-width:370px){html,body{font-size:20px}.prompt.math{font-size:2.8rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <button class="home hidden" id="homeBtn" type="button" aria-label="Zum Start">🏠</button>
+  <h1 id="title">⭐ Übungs-App</h1>
+  <div class="pills"><span class="pill" id="pointsPill">⭐ 0</span><span class="pill" id="streakPill">🔥 0</span></div>
+</header>
+
+<!-- Startbildschirm -->
+<section id="vStart">
+  <div class="hello">Hallo! Was übst du heute? 😊</div>
+  <div class="modes">
+    <button class="mode m-tage" type="button" data-mode="tage"><span class="i">📅</span>Wochentage<span class="s" id="sub-tage"></span></button>
+    <button class="mode m-plus" type="button" data-mode="plus"><span class="i">➕</span>Plus bis 20<span class="s" id="sub-plus"></span></button>
+    <button class="mode m-mal" type="button" data-mode="mal"><span class="i">✖️</span>Einmaleins<span class="s" id="sub-mal"></span></button>
+    <button class="mode m-mix" type="button" data-mode="mix"><span class="i">🎲</span>Gemischt<span class="s" id="sub-mix"></span></button>
+  </div>
+  <div class="card">
+    <h3 class="t">✖️ Einmaleins-Reihen</h3>
+    <div class="chips" id="rows"></div>
+    <div class="small" style="margin-top:8px">Tippe auf eine Reihe. Blau = wird geübt.</div>
+  </div>
+  <div class="duo">
+    <div class="card">
+      <h3 class="t">📊 Das hast du geschafft</h3>
+      <div class="stats" id="stats"></div>
+    </div>
+    <div class="card">
+      <h3 class="t">🏅 Abzeichen</h3>
+      <div class="badges" id="badges"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Üben -->
+<section id="vQuiz" class="hidden">
+  <div class="dots" id="dots"></div>
+  <div class="card qcard" id="qcard">
+    <button class="speak hidden" id="speakBtn" type="button" aria-label="Vorlesen">🔊</button>
+    <div class="qtag" id="qtag"></div>
+    <div class="prompt" id="prompt"></div>
+    <div id="mathArea" class="hidden"><div class="display empty" id="display"></div></div>
+    <div class="fb" id="fb"></div>
+  </div>
+  <div id="answerArea"></div>
+</section>
+
+<!-- Ergebnis -->
+<section id="vResult" class="hidden">
+  <div class="card result">
+    <div class="stars" id="resStars"></div>
+    <div class="big" id="resTitle"></div>
+    <div class="prompt" id="resText" style="font-size:1.4rem"></div>
+    <div id="resBadges"></div>
+    <div class="row">
+      <button class="primary" type="button" id="againBtn">🔁 Nochmal</button>
+      <button class="ghost" type="button" id="startBtn">🏠 Start</button>
+    </div>
+  </div>
+</section>
+</div>
+<div id="confetti"></div>
+
+<script>
+"use strict";
+// ================= Logik (ohne Bildschirm, testbar über window.UA) =================
+const STORE_KEY = "uebungs-app-2kl-v1";
+const TAGE = ["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"];
+const ROUND_LEN = 10;
+const MODES = {tage:"Wochentage", plus:"Plus bis 20", mal:"Einmaleins", mix:"Gemischt"};
+// Die „fiesen“ Plusaufgaben (ohne Tauschaufgaben); Tauschaufgaben werden ergänzt
+const FOCUS_BASE = [[4,7],[4,8],[6,7],[6,8],[8,9],[7,9],[7,8],[3,8]];
+const FOCUS = (()=>{ const o=[]; for(const [a,b] of FOCUS_BASE){ o.push([a,b]); o.push([b,a]); } return o; })();
+const FOCUS_KEYS = new Set(FOCUS.map(([a,b])=>a+"+"+b));
+const FOCUS_SHARE = 0.65;
+const OTHER_PLUS = (()=>{ const o=[]; for(let a=1;a<=19;a++) for(let b=1;a+b<=20;b++) if(!FOCUS_KEYS.has(a+"+"+b)) o.push([a,b]); return o; })();
+const REPEAT_SHARE = 0.35;
+
+const mod7 = n => ((n%7)+7)%7;
+function shiftDay(i, n){ return mod7(i+n); }
+function pick(arr, rnd){ return arr[Math.floor(rnd()*arr.length)]; }
+function rint(lo, hi, rnd){ return lo + Math.floor(rnd()*(hi-lo+1)); }
+// Stufe der Wochentag-Fragen: wächst mit der Zahl richtiger Antworten
+function dayLevel(correct){ return correct < 8 ? 1 : correct < 20 ? 2 : 3; }
+// Weg von Start zum Ziel (für die Erklärung bei Fehlern)
+function dayPath(start, n){ const p=[start]; const s=n>=0?1:-1; for(let k=1;k<=Math.abs(n);k++) p.push(shiftDay(start, s*k)); return p; }
+const ZAHLWORT = ["","einen","zwei","drei","vier","fünf","sechs"];
+function makeDayQ(level, rnd){
+  rnd = rnd || Math.random;
+  const types = level<=1 ? ["nach","vor","nach","morgen"]
+              : level===2 ? ["nach","vor","morgen","gestern","uebermorgen","vorgestern","n"]
+              : ["morgen","gestern","uebermorgen","vorgestern","n","n","n"];
+  const type = pick(types, rnd);
+  let start = rint(0,6,rnd), n, text;
+  if(type==="nach"){ n=1; text=`Welcher Tag kommt nach <span class="d">${TAGE[start]}</span>?`; }
+  else if(type==="vor"){ n=-1; text=`Welcher Tag kommt vor <span class="d">${TAGE[start]}</span>?`; }
+  else if(type==="morgen"){ n=1; text=`Heute ist <span class="d">${TAGE[start]}</span>. Welcher Tag ist morgen?`; }
+  else if(type==="gestern"){ n=-1; text=`Heute ist <span class="d">${TAGE[start]}</span>. Welcher Tag war gestern?`; }
+  else if(type==="uebermorgen"){ n=2; text=`Heute ist <span class="d">${TAGE[start]}</span>. Welcher Tag ist übermorgen?`; }
+  else if(type==="vorgestern"){ n=-2; text=`Heute ist <span class="d">${TAGE[start]}</span>. Welcher Tag war vorgestern?`; }
+  else {
+    const back = rnd() < 0.5;
+    if(level===2){
+      // Stufe 2: 2–3 Tage, noch ohne Sprung über das Wochenende hinweg
+      const k = rint(2,3,rnd);
+      start = back ? rint(k,6,rnd) : rint(0,6-k,rnd);
+      n = back ? -k : k;
+    } else {
+      const k = rint(1,6,rnd);
+      n = back ? -k : k;
+      // Stufe 3: in etwa der Hälfte der Fälle bewusst über die Wochengrenze
+      if(rnd() < 0.5){ start = back ? rint(0,k-1,rnd) : rint(7-k,6,rnd); }
+    }
+    const k = Math.abs(n);
+    text = `Welcher Tag ist <b>${k} ${k===1?"Tag":"Tage"}</b> ${n>0?"nach":"vor"} <span class="d">${TAGE[start]}</span>?`;
+  }
+  const answer = shiftDay(start, n);
+  return {mode:"tage", kind:"tag", type, start, n, answer, text, key:"t:"+type+":"+start+":"+n, say:text.replace(/<[^>]+>/g,"")};
+}
+function plusQ(a,b){ return {mode:"plus", kind:"zahl", a, b, answer:a+b, key:a+"+"+b, focus:FOCUS_KEYS.has(a+"+"+b), text:`${a} + ${b} = `, say:`${a} plus ${b}`}; }
+function malQ(a,b){ return {mode:"mal", kind:"zahl", a, b, answer:a*b, key:a+"·"+b, text:`${a} · ${b} = `, say:`${a} mal ${b}`}; }
+function parsePlus(k){ const m=/^(\d+)\+(\d+)$/.exec(k); return m ? [ +m[1], +m[2] ] : null; }
+function parseMal(k){ const m=/^(\d+)·(\d+)$/.exec(k); return m ? [ +m[1], +m[2] ] : null; }
+// repeat: Liste von Aufgaben-Schlüsseln, die zuletzt falsch waren
+function makePlusQ(rnd, repeat){
+  rnd = rnd || Math.random;
+  const rep = (repeat||[]).map(parsePlus).filter(p=>p && p[0]+p[1]<=20);
+  if(rep.length && rnd() < REPEAT_SHARE){ const [a,b]=pick(rep,rnd); return Object.assign(plusQ(a,b), {repeat:true}); }
+  const [a,b] = rnd() < FOCUS_SHARE ? pick(FOCUS,rnd) : pick(OTHER_PLUS,rnd);
+  return plusQ(a,b);
+}
+function makeMalQ(rnd, rows, repeat){
+  rnd = rnd || Math.random;
+  rows = (rows && rows.length) ? rows.filter(r=>r>=1&&r<=10) : [1,2,3,4,5,6,7,8,9,10];
+  if(!rows.length) rows=[1,2,3,4,5,6,7,8,9,10];
+  const rep = (repeat||[]).map(parseMal).filter(p=>p && (rows.includes(p[0])||rows.includes(p[1])) && p[0]<=10 && p[1]<=10);
+  if(rep.length && rnd() < REPEAT_SHARE){ const [a,b]=pick(rep,rnd); return Object.assign(malQ(a,b), {repeat:true}); }
+  const r = pick(rows, rnd), m = rint(1,10,rnd);
+  return rnd()<0.5 ? malQ(m, r) : malQ(r, m);
+}
+// Nächste Aufgabe für einen Modus; vermeidet die direkte Wiederholung derselben Aufgabe
+function nextQ(mode, st, rnd, lastKey){
+  rnd = rnd || Math.random;
+  for(let i=0;i<12;i++){
+    const m = mode==="mix" ? pick(["tage","plus","mal"], rnd) : mode;
+    let q;
+    if(m==="tage") q = makeDayQ(dayLevel(st.modes.tage.r), rnd);
+    else if(m==="plus") q = makePlusQ(rnd, Object.keys(st.wdh.plus));
+    else q = makeMalQ(rnd, st.settings.rows, Object.keys(st.wdh.mal));
+    if(q.key!==lastKey || i===11) return q;
+  }
+}
+function starsFor(correct, total){ const p = total ? correct/total : 0; return p>=0.9 ? 3 : p>=0.7 ? 2 : p>=0.4 ? 1 : 0; }
+
+// ---------- Datum / Zustand ----------
+let nowFn = ()=>Date.now();
+const pad2 = n=>String(n).padStart(2,"0");
+function dayKey(ts){ const d=new Date(ts===undefined?nowFn():ts); return d.getFullYear()+"-"+pad2(d.getMonth()+1)+"-"+pad2(d.getDate()); }
+function addDays(k,n){ const [y,m,d]=k.split("-").map(Number); const x=new Date(y,m-1,d); x.setDate(x.getDate()+n); return dayKey(x.getTime()); }
+const isObj = x=> !!x && typeof x==="object" && !Array.isArray(x);
+const num = x=>{ const n=Number(x); return isFinite(n)&&n>0 ? n : 0; };
+const emptyMode = ()=>({runden:0, n:0, r:0, sterne:0, best:0});
+const defaultState = ()=>({version:1, punkte:0, modes:{tage:emptyMode(), plus:emptyMode(), mal:emptyMode(), mix:emptyMode()}, tage:{}, wdh:{plus:{}, mal:{}}, settings:{rows:[1,2,3,4,5,6,7,8,9,10]}, abzeichen:{}});
+function migrate(raw){
+  const s = defaultState();
+  if(!isObj(raw)) return s;
+  s.punkte = num(raw.punkte);
+  if(isObj(raw.modes)) for(const m in s.modes) if(isObj(raw.modes[m])) for(const f in s.modes[m]) s.modes[m][f]=num(raw.modes[m][f]);
+  if(isObj(raw.tage)) s.tage = raw.tage;
+  if(isObj(raw.wdh)){ for(const m of ["plus","mal"]) if(isObj(raw.wdh[m])) s.wdh[m]=raw.wdh[m]; }
+  if(isObj(raw.settings) && Array.isArray(raw.settings.rows)){ const r=raw.settings.rows.filter(x=>Number.isInteger(x)&&x>=1&&x<=10); if(r.length) s.settings.rows=r; }
+  if(isObj(raw.abzeichen)) s.abzeichen = raw.abzeichen;
+  return s;
+}
+function load(){
+  let txt=null; try{ txt=localStorage.getItem(STORE_KEY); }catch(e){}
+  if(!txt) return defaultState();
+  try{ return migrate(JSON.parse(txt)); }
+  catch(e){ try{ localStorage.setItem(STORE_KEY+"-unlesbar-"+Date.now(), txt); }catch(_){} return defaultState(); }
+}
+function save(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){} }
+let state = load();
+
+// Serie: Tage in Folge mit mindestens einer Runde (heute oder gestern zählt als „läuft noch“)
+function dayStreak(){
+  let k = dayKey(); if(!state.tage[k]) k = addDays(k,-1);
+  let n=0; while(state.tage[k]){ n++; k=addDays(k,-1); }
+  return n;
+}
+// Eine Antwort verbuchen (für Wiederholung falscher Aufgaben)
+function recordAnswer(q, ok){
+  const m = state.modes[q.mode]; m.n++; if(ok) m.r++;
+  if(q.mode==="plus"||q.mode==="mal"){
+    const w = state.wdh[q.mode];
+    if(!ok) w[q.key] = 2;                         // muss 2× richtig sein, bevor es aus der Liste fällt
+    else if(w[q.key]){ w[q.key]--; if(w[q.key]<=0) delete w[q.key]; }
+  }
+  const t = state.tage[dayKey()] || (state.tage[dayKey()] = {n:0, r:0});
+  t.n++; if(ok) t.r++;
+}
+const BADGES = [
+  {id:"erste",  i:"🌱", t:"Erste Runde",     test:s=>sum(s,"runden")>=1},
+  {id:"drei",   i:"🌟", t:"3 Sterne",        test:s=>Object.values(s.modes).some(m=>m.best>=3)},
+  {id:"p100",   i:"💯", t:"100 Punkte",      test:s=>s.punkte>=100},
+  {id:"tage",   i:"📅", t:"Wochentage-Profi", test:s=>s.modes.tage.r>=30},
+  {id:"plus",   i:"➕", t:"Plus-Profi",       test:s=>s.modes.plus.r>=50},
+  {id:"mal",    i:"✖️", t:"Mal-Profi",        test:s=>s.modes.mal.r>=50},
+  {id:"serie3", i:"🔥", t:"3 Tage in Folge", test:()=>dayStreak()>=3},
+  {id:"p500",   i:"🏆", t:"500 Punkte",      test:s=>s.punkte>=500},
+];
+// Antworten aus „Gemischt“ stecken schon in Wochentage/Plus/Einmaleins, daher nur Runden über alle vier Modi zählen
+function sum(s,f){ return Object.keys(s.modes).filter(m=>f==="runden"||m!=="mix").reduce((a,m)=>a+num(s.modes[m][f]),0); }
+function checkBadges(){ const neu=[]; for(const b of BADGES){ if(!state.abzeichen[b.id] && b.test(state)){ state.abzeichen[b.id]=dayKey(); neu.push(b); } } return neu; }
+
+// ================= Oberfläche =================
+const $ = id=>document.getElementById(id);
+let round = null;   // {mode, i, results:[], q, answered, input}
+let lastKey = null, advanceTimer = null;
+
+function show(view){
+  for(const v of ["vStart","vQuiz","vResult"]) $(v).classList.toggle("hidden", v!==view);
+  $("homeBtn").classList.toggle("hidden", view==="vStart");
+  document.body.classList.toggle("inq", view!=="vStart");
+  window.scrollTo(0,0);
+}
+function updateTop(){
+  $("pointsPill").textContent = "⭐ " + state.punkte;
+  const s = dayStreak(); $("streakPill").textContent = "🔥 " + s;
+  $("streakPill").title = s===1 ? "1 Tag in Folge geübt" : s+" Tage in Folge geübt";
+}
+function renderStart(){
+  updateTop();
+  for(const m in MODES){ const x=state.modes[m]; $("sub-"+m).textContent = x.runden ? "★".repeat(x.best)+"☆".repeat(3-x.best) : "Neu!"; }
+  $("rows").innerHTML = [1,2,3,4,5,6,7,8,9,10].map(r=>`<button type="button" class="chip${state.settings.rows.includes(r)?" on":""}" data-row="${r}">${r}er</button>`).join("")
+    + `<button type="button" class="chip" data-row="all">Alle</button>`;
+  const r=sum(state,"r"), n=sum(state,"n");
+  $("stats").innerHTML = [
+    ["⭐", state.punkte, "Punkte"],
+    ["✅", r, "richtig"],
+    ["🎯", sum(state,"runden"), "Runden"],
+    ["🔥", dayStreak(), "Tage in Folge"],
+  ].map(([i,v,l])=>`<div><b>${i} ${v}</b>${l}</div>`).join("")
+   + Object.keys(MODES).map(m=>{ const x=state.modes[m]; const p=x.n?Math.round(100*x.r/x.n):0; return `<div><b style="font-size:1.1rem">${MODES[m]}</b>${x.runden} ${x.runden===1?"Runde":"Runden"} · ${x.n?p+" %":"–"}</div>`; }).join("");
+  $("badges").innerHTML = BADGES.map(b=>`<div class="badge ${state.abzeichen[b.id]?"got":"off"}"><span class="i">${b.i}</span>${b.t}</div>`).join("");
+}
+document.getElementById("rows").addEventListener("click", e=>{
+  const b=e.target.closest("[data-row]"); if(!b) return;
+  const v=b.getAttribute("data-row");
+  if(v==="all") state.settings.rows=[1,2,3,4,5,6,7,8,9,10];
+  else { const r=+v, rows=state.settings.rows;
+    if(rows.includes(r)){ if(rows.length>1) state.settings.rows=rows.filter(x=>x!==r); }
+    else state.settings.rows=rows.concat(r).sort((a,b)=>a-b); }
+  save(); renderStart();
+});
+document.querySelectorAll("[data-mode]").forEach(b=>b.addEventListener("click", ()=>startRound(b.getAttribute("data-mode"))));
+$("homeBtn").onclick = ()=>{ clearTimeout(advanceTimer); round=null; show("vStart"); renderStart(); };
+$("startBtn").onclick = ()=>{ show("vStart"); renderStart(); };
+$("againBtn").onclick = ()=>{ if(round) startRound(round.mode); };
+
+function startRound(mode){
+  clearTimeout(advanceTimer);
+  round = {mode, i:0, results:[], q:null, answered:false, input:""};
+  show("vQuiz"); updateTop(); nextQuestion();
+}
+function renderDots(){
+  $("dots").innerHTML = Array.from({length:ROUND_LEN},(_,k)=>{
+    const r=round.results[k]; return `<span class="dot${r===true?" r":r===false?" f":k===round.i?" now":""}"></span>`; }).join("");
+}
+function nextQuestion(){
+  clearTimeout(advanceTimer);
+  if(round.i>=ROUND_LEN) return finishRound();
+  const q = nextQ(round.mode, state, Math.random, lastKey);
+  lastKey = q.key; round.q=q; round.answered=false; round.input="";
+  renderDots();
+  $("qtag").textContent = (round.mode==="mix" ? "🎲 " : "") + {tage:"📅 Wochentage", plus:"➕ Plus", mal:"✖️ Einmaleins"}[q.mode] + (q.repeat ? " · nochmal üben" : "");
+  const p=$("prompt"); p.className = "prompt" + (q.kind==="zahl" ? " math" : ""); p.innerHTML = q.kind==="zahl" ? esc(q.text).replace(/ = $/," =") : q.text;
+  p.classList.remove("pop"); void p.offsetWidth; p.classList.add("pop");
+  $("fb").className="fb"; $("fb").innerHTML="";
+  $("speakBtn").classList.toggle("hidden", !canSpeak());
+  if(q.kind==="tag"){
+    $("mathArea").classList.add("hidden");
+    $("answerArea").innerHTML = `<div class="days">${TAGE.map((t,k)=>`<button type="button" data-day="${k}">${t}</button>`).join("")}</div>`;
+  } else {
+    $("mathArea").classList.remove("hidden"); renderDisplay();
+    $("answerArea").innerHTML = `<div class="pad">${[1,2,3,4,5,6,7,8,9].map(d=>`<button type="button" data-key="${d}">${d}</button>`).join("")}<button type="button" class="del" data-key="del" aria-label="Löschen">⌫</button><button type="button" data-key="0">0</button><button type="button" class="okk" data-key="ok">OK</button></div>`;
+  }
+}
+function renderDisplay(){ const d=$("display"); d.textContent=round.input; d.classList.toggle("empty", !round.input); }
+$("answerArea").addEventListener("click", e=>{
+  if(!round || round.answered) return;
+  const day=e.target.closest("[data-day]"); if(day) return answer(+day.getAttribute("data-day"), day);
+  const k=e.target.closest("[data-key]"); if(k) return padKey(k.getAttribute("data-key"));
+});
+function padKey(k){
+  if(!round || round.answered || round.q.kind!=="zahl") return;
+  if(k==="del") round.input = round.input.slice(0,-1);
+  else if(k==="ok"){ if(round.input==="") { $("display").classList.remove("shake"); void $("display").offsetWidth; $("display").classList.add("shake"); return; } return answer(+round.input); }
+  else if(round.input.length<3) round.input = (round.input==="0" ? "" : round.input) + k;
+  renderDisplay();
+}
+document.addEventListener("keydown", e=>{
+  if(!round || $("vQuiz").classList.contains("hidden")) return;
+  if(round.answered){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); nextQuestion(); } return; }
+  if(round.q.kind!=="zahl") return;
+  if(/^[0-9]$/.test(e.key)) padKey(e.key);
+  else if(e.key==="Backspace") padKey("del");
+  else if(e.key==="Enter"){ e.preventDefault(); padKey("ok"); }
+});
+const LOB = ["Super! 🎉","Toll! ⭐","Klasse! 🌟","Richtig! 👍","Prima! 🎈","Spitze! 🚀","Genau! 😊","Wow! ✨"];
+const TROST = ["Fast! 💛","Nicht schlimm! 💛","Gleich nochmal! 💪"];
+function answer(val, btn){
+  const q=round.q; round.answered=true;
+  const ok = val===q.answer;
+  round.results[round.i]=ok; recordAnswer(q, ok);
+  if(ok){ state.punkte += 10; }
+  save(); updateTop(); renderDots();
+  const fb=$("fb");
+  if(q.kind==="tag"){
+    document.querySelectorAll("[data-day]").forEach(b=>{ const k=+b.getAttribute("data-day"); if(k===q.answer) b.classList.add("right"); else if(b===btn) b.classList.add("wrong"); b.disabled=true; });
+  } else { $("display").textContent = String(val); }
+  if(ok){
+    fb.className="fb good show"; fb.innerHTML=`<b>${pick(LOB,Math.random)}</b> <span>+10 ⭐</span>`;
+    confetti();
+    advanceTimer = setTimeout(()=>{ round.i++; nextQuestion(); }, 1300);
+  } else {
+    let sol;
+    if(q.kind==="tag"){
+      const path = dayPath(q.start, q.n);
+      sol = `Richtig ist: <b>${TAGE[q.answer]}</b><div class="week">${path.map((d,k)=>`<span class="${k===0?"st":k===path.length-1?"ans":"go"}">${TAGE[d].slice(0,2)}</span>`).join(q.n>0?"→":"←")}</div>`;
+    } else sol = `${esc(q.text)}<b>${q.answer}</b>`;
+    fb.className="fb soft show"; fb.innerHTML=`<div>${pick(TROST,Math.random)}</div><div>${sol}</div><button type="button" class="next" id="nextBtn">Weiter ➜</button>`;
+    $("nextBtn").onclick = ()=>{ round.i++; nextQuestion(); };
+  }
+}
+function finishRound(){
+  const r = round.results.filter(x=>x===true).length;
+  const s = starsFor(r, ROUND_LEN);
+  const m = state.modes[round.mode]; m.runden++; m.sterne+=s; if(s>m.best) m.best=s;
+  if(round.mode==="mix"){ m.n += ROUND_LEN; m.r += r; } // Gemischt zusätzlich als eigener Modus zählen
+  if(s===3) state.punkte += 20;                         // Bonus für 3 Sterne
+  const neu = checkBadges(); save(); updateTop();
+  show("vResult");
+  $("resStars").innerHTML = [0,1,2].map(k=>`<span class="${k<s?"on":""}">⭐</span>`).join("");
+  $("resTitle").textContent = s===3 ? "Fantastisch! 🎉" : s===2 ? "Super gemacht! 🌟" : s===1 ? "Gut gemacht! 👍" : "Weiter üben! 💪";
+  $("resText").innerHTML = `${r} von ${ROUND_LEN} richtig` + (s===3 ? "<br>+20 Bonus ⭐" : "");
+  $("resBadges").innerHTML = neu.map(b=>`<div class="newbadge pop">Neues Abzeichen: ${b.i} ${b.t}</div>`).join("");
+  if(s>=2) confetti(40);
+}
+function confetti(n){
+  if(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const box=$("confetti"), sym=["⭐","🌟","✨","🎉","💛","🎈"];
+  for(let k=0;k<(n||18);k++){ const i=document.createElement("i"); i.textContent=sym[k%sym.length];
+    i.style.left=(Math.random()*96)+"%"; i.style.animationDelay=(Math.random()*.3)+"s"; i.style.fontSize=(20+Math.random()*18)+"px";
+    box.appendChild(i); setTimeout(()=>i.remove(), 1800); }
+}
+function esc(s){ return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+// ---------- Vorlesen (optional, Deutsch) ----------
+function canSpeak(){ return typeof window.speechSynthesis!=="undefined" && typeof window.SpeechSynthesisUtterance!=="undefined"; }
+let deVoice=null;
+function loadVoices(){ try{ const vs=speechSynthesis.getVoices()||[]; deVoice = vs.find(v=>/^de([-_]|$)/i.test(v.lang||"")) || null; }catch(e){} }
+if(canSpeak()){ loadVoices(); try{ speechSynthesis.addEventListener("voiceschanged", loadVoices); }catch(e){} }
+function say(text){
+  if(!canSpeak()) return;
+  const s=speechSynthesis; try{ if(s.speaking||s.pending) s.cancel(); }catch(e){}
+  const u=new SpeechSynthesisUtterance(text); if(deVoice){ u.voice=deVoice; u.lang=deVoice.lang; } else u.lang="de-DE";
+  u.rate=0.85; window.__lastUtterance=u; s.speak(u);
+}
+$("speakBtn").onclick = ()=>{ if(round && round.q) say(round.q.say.replace(/·/g," mal ")); };
+
+window.UA = {TAGE, FOCUS, FOCUS_BASE, FOCUS_KEYS, OTHER_PLUS, shiftDay, dayPath, dayLevel, makeDayQ, makePlusQ, makeMalQ, nextQ, starsFor, defaultState, migrate, STORE_KEY, ROUND_LEN,
+  get state(){ return state; }, get round(){ return round; }, setNow:f=>{ nowFn=f||(()=>Date.now()); }, dayStreak};
+renderStart();
+</script>
+</body>
+</html>
