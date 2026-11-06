@@ -13,7 +13,7 @@ html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-syst
 body{padding:env(safe-area-inset-top) 12px calc(env(safe-area-inset-bottom) + 16px);overflow-x:hidden}
 .wrap{max-width:760px;margin:0 auto}
 header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 0 4px}
-header h1{font-size:1.15rem;margin:0;white-space:nowrap}
+header h1{font-size:1.05rem;margin:0;line-height:1.15;min-width:0}
 button{font:inherit;border:0;border-radius:18px;padding:14px 18px;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;color:var(--ink)}
 button:active{transform:scale(.97)}
 .card{background:var(--card);border-radius:var(--radius);box-shadow:0 6px 20px rgba(30,60,110,.10);padding:20px;margin:12px 0}
@@ -29,6 +29,21 @@ button:active{transform:scale(.97)}
 .m-plus{background:linear-gradient(135deg,#22b573,#56cc9d)}
 .m-mal{background:linear-gradient(135deg,#2f7cf6,#6aa5ff)}
 .m-mix{background:linear-gradient(135deg,#8a5cf6,#c06cf0)}
+.m-blitz{background:linear-gradient(135deg,#ffd23f,#ff4d6d)}
+.mode .lbl{display:block;line-height:1.15;text-wrap:balance}
+.blitz{display:flex;align-items:center;gap:8px;margin:0}
+.blitz-ico{font-size:1.2rem;line-height:1}
+.blitz-track{flex:1;height:14px;background:#d9e6f7;border-radius:999px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(30,60,110,.15)}
+.blitz-fill{height:100%;width:100%;background:linear-gradient(90deg,#22b573,#56cc9d);border-radius:999px}
+.blitz.low .blitz-fill{background:linear-gradient(90deg,#ff9f1c,#f2545b)}
+.blitz-num{font-weight:800;font-variant-numeric:tabular-nums;min-width:1.3ch;text-align:right;font-size:1.25rem;line-height:1}
+body.blitzing .qcard{padding:12px 16px 14px}
+body.blitzing .prompt.math{margin:2px 0}
+body.blitzing .pad{gap:8px}
+body.blitzing .pad button{min-height:70px;padding:10px 8px}
+.blitz.low .blitz-num{color:var(--red)}
+.fb.time{background:#e7f1ff;border:3px solid #7aa7f8}
+.dot.to{background:#8eaccf}
 h3.t{margin:0 0 10px;font-size:1.1rem}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{background:#eef2f8;min-width:60px;padding:12px 14px;font-weight:800;font-size:1.1rem}
@@ -54,6 +69,7 @@ h3.t{margin:0 0 10px;font-size:1.1rem}
 .days button.wrong{background:#fff4e0;border-color:var(--orange)}
 .pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:420px;margin:0 auto}
 .pad button{font-size:2rem;font-weight:800;min-height:76px;background:#fff;border:4px solid #dbe5f2}
+.pad button:disabled{opacity:.4}
 .pad .del{background:#fde8e9;border-color:#f7c3c6}
 .pad .okk{background:var(--green);color:#fff;border-color:var(--green)}
 .fb{border-radius:18px;padding:16px;margin:12px 0 0;font-size:1.3rem;display:none;text-align:center}
@@ -117,11 +133,17 @@ h3.t{margin:0 0 10px;font-size:1.1rem}
     <button class="mode m-plus" type="button" data-mode="plus"><span class="i">➕</span>Plus bis 20<span class="s" id="sub-plus"></span></button>
     <button class="mode m-mal" type="button" data-mode="mal"><span class="i">✖️</span>Einmaleins<span class="s" id="sub-mal"></span></button>
     <button class="mode m-mix" type="button" data-mode="mix"><span class="i">🎲</span>Gemischt<span class="s" id="sub-mix"></span></button>
+    <button class="mode m-blitz" type="button" data-mode="blitz"><span class="i">⚡</span><span class="lbl">Blitz-Rechner</span><span class="s" id="sub-blitz"></span></button>
   </div>
   <div class="card">
     <h3 class="t">✖️ Einmaleins-Reihen</h3>
     <div class="chips" id="rows"></div>
     <div class="small" style="margin-top:8px">Tippe auf eine Reihe. Blau = wird geübt.</div>
+  </div>
+  <div class="card">
+    <h3 class="t">⚡ Blitz-Zeit</h3>
+    <div class="chips" id="blitzSecs"></div>
+    <div class="small" style="margin-top:8px">Sekunden pro Aufgabe. Ist die Zeit um, gilt sie als nicht gelöst.</div>
   </div>
   <div class="duo">
     <div class="card">
@@ -138,6 +160,11 @@ h3.t{margin:0 0 10px;font-size:1.1rem}
 <!-- Üben -->
 <section id="vQuiz" class="hidden">
   <div class="dots" id="dots"></div>
+  <div class="blitz hidden" id="blitzBar" role="timer" aria-live="off" aria-label="Restzeit">
+    <span class="blitz-ico" aria-hidden="true">⏱️</span>
+    <div class="blitz-track"><div class="blitz-fill" id="blitzFill"></div></div>
+    <span class="blitz-num" id="blitzNum">8</span>
+  </div>
   <div class="card qcard" id="qcard">
     <button class="speak hidden" id="speakBtn" type="button" aria-label="Vorlesen">🔊</button>
     <div class="qtag" id="qtag"></div>
@@ -168,9 +195,14 @@ h3.t{margin:0 0 10px;font-size:1.1rem}
 "use strict";
 // ================= Logik (ohne Bildschirm, testbar über window.UA) =================
 const STORE_KEY = "uebungs-app-2kl-v1";
+// Einzige sichtbare App-Version. Nächste Live-Verbesserung: +0.1 (v0.2, v0.3, …).
+// Unabhängig vom Speicherformat (state.version bleibt 1, Schlüssel bleibt STORE_KEY).
+const APP_VERSION = "0.1";
 const TAGE = ["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"];
 const ROUND_LEN = 10;
-const MODES = {tage:"Wochentage", plus:"Plus bis 20", mal:"Einmaleins", mix:"Gemischt"};
+const BLITZ_DEFAULT_SEK = 8;
+const BLITZ_CHOICES = [6, 8, 10];
+const MODES = {tage:"Wochentage", plus:"Plus bis 20", mal:"Einmaleins", mix:"Gemischt", blitz:"Blitz-Rechner"};
 // Die „fiesen“ Plusaufgaben (ohne Tauschaufgaben); Tauschaufgaben werden ergänzt
 const FOCUS_BASE = [[4,7],[4,8],[6,7],[6,8],[8,9],[7,9],[7,8],[3,8]];
 const FOCUS = (()=>{ const o=[]; for(const [a,b] of FOCUS_BASE){ o.push([a,b]); o.push([b,a]); } return o; })();
@@ -241,15 +273,38 @@ function makeMalQ(rnd, rows, repeat){
   const r = pick(rows, rnd), m = rint(1,10,rnd);
   return rnd()<0.5 ? malQ(m, r) : malQ(r, m);
 }
+// Blitz: Plus und Einmaleins im Wechsel. Wiederholungen nur aus eigenen Fehlversuchen, nicht aus Zeitablauf.
+function makeBlitzQ(rnd, rows, repeat){
+  rnd = rnd || Math.random;
+  rows = (rows && rows.length) ? rows.filter(r=>r>=1&&r<=10) : [1,2,3,4,5,6,7,8,9,10];
+  if(!rows.length) rows=[1,2,3,4,5,6,7,8,9,10];
+  const plusRep = [], malRep = [];
+  for(const k of (repeat||[])){
+    const p = parsePlus(k); if(p && p[0]+p[1]<=20) plusRep.push(p);
+    const m = parseMal(k); if(m && (rows.includes(m[0])||rows.includes(m[1])) && m[0]<=10 && m[1]<=10) malRep.push(m);
+  }
+  let q = null;
+  if((plusRep.length || malRep.length) && rnd() < REPEAT_SHARE){
+    const usePlus = plusRep.length && (!malRep.length || rnd() < 0.5);
+    if(usePlus){ const [a,b]=pick(plusRep, rnd); q = Object.assign(plusQ(a,b), {repeat:true}); }
+    else if(malRep.length){ const [a,b]=pick(malRep, rnd); q = Object.assign(malQ(a,b), {repeat:true}); }
+  }
+  if(!q) q = rnd()<0.5 ? makePlusQ(rnd, []) : makeMalQ(rnd, rows, []);
+  q.mode = "blitz";
+  return q;
+}
 // Nächste Aufgabe für einen Modus; vermeidet die direkte Wiederholung derselben Aufgabe
 function nextQ(mode, st, rnd, lastKey){
   rnd = rnd || Math.random;
   for(let i=0;i<12;i++){
-    const m = mode==="mix" ? pick(["tage","plus","mal"], rnd) : mode;
     let q;
-    if(m==="tage") q = makeDayQ(dayLevel(st.modes.tage.r), rnd);
-    else if(m==="plus") q = makePlusQ(rnd, Object.keys(st.wdh.plus));
-    else q = makeMalQ(rnd, st.settings.rows, Object.keys(st.wdh.mal));
+    if(mode==="blitz") q = makeBlitzQ(rnd, st.settings.rows, Object.keys(st.wdh.blitz));
+    else {
+      const m = mode==="mix" ? pick(["tage","plus","mal"], rnd) : mode;
+      if(m==="tage") q = makeDayQ(dayLevel(st.modes.tage.r), rnd);
+      else if(m==="plus") q = makePlusQ(rnd, Object.keys(st.wdh.plus));
+      else q = makeMalQ(rnd, st.settings.rows, Object.keys(st.wdh.mal));
+    }
     if(q.key!==lastKey || i===11) return q;
   }
 }
@@ -279,15 +334,17 @@ function addDays(k,n){ const [y,m,d]=k.split("-").map(Number); const x=new Date(
 const isObj = x=> !!x && typeof x==="object" && !Array.isArray(x);
 const num = x=>{ const n=Number(x); return isFinite(n)&&n>0 ? n : 0; };
 const emptyMode = ()=>({runden:0, n:0, r:0, sterne:0, best:0});
-const defaultState = ()=>({version:1, punkte:0, modes:{tage:emptyMode(), plus:emptyMode(), mal:emptyMode(), mix:emptyMode()}, tage:{}, wdh:{plus:{}, mal:{}}, settings:{rows:[1,2,3,4,5,6,7,8,9,10]}, abzeichen:{}});
+const defaultState = ()=>({version:1, punkte:0, modes:{tage:emptyMode(), plus:emptyMode(), mal:emptyMode(), mix:emptyMode(), blitz:emptyMode()}, tage:{}, wdh:{plus:{}, mal:{}, blitz:{}}, settings:{rows:[1,2,3,4,5,6,7,8,9,10], blitzSek:BLITZ_DEFAULT_SEK}, abzeichen:{}});
+function blitzSeconds(){ const n=Number(state.settings && state.settings.blitzSek); return BLITZ_CHOICES.includes(n) ? n : BLITZ_DEFAULT_SEK; }
 function migrate(raw){
   const s = defaultState();
   if(!isObj(raw)) return s;
   s.punkte = num(raw.punkte);
   if(isObj(raw.modes)) for(const m in s.modes) if(isObj(raw.modes[m])) for(const f in s.modes[m]) s.modes[m][f]=num(raw.modes[m][f]);
   if(isObj(raw.tage)) s.tage = raw.tage;
-  if(isObj(raw.wdh)){ for(const m of ["plus","mal"]) if(isObj(raw.wdh[m])) s.wdh[m]=raw.wdh[m]; }
+  if(isObj(raw.wdh)){ for(const m of ["plus","mal","blitz"]) if(isObj(raw.wdh[m])) s.wdh[m]=raw.wdh[m]; }
   if(isObj(raw.settings) && Array.isArray(raw.settings.rows)){ const r=raw.settings.rows.filter(x=>Number.isInteger(x)&&x>=1&&x<=10); if(r.length) s.settings.rows=r; }
+  if(isObj(raw.settings) && BLITZ_CHOICES.includes(Number(raw.settings.blitzSek))) s.settings.blitzSek = Number(raw.settings.blitzSek);
   if(isObj(raw.abzeichen)) s.abzeichen = raw.abzeichen;
   return s;
 }
@@ -309,7 +366,7 @@ function dayStreak(){
 // Eine Antwort verbuchen (für Wiederholung falscher Aufgaben)
 function recordAnswer(q, ok){
   const m = state.modes[q.mode]; m.n++; if(ok) m.r++;
-  if(q.mode==="plus"||q.mode==="mal"){
+  if((q.mode==="plus"||q.mode==="mal"||q.mode==="blitz") && state.wdh[q.mode]){
     const w = state.wdh[q.mode];
     if(!ok) w[q.key] = 2;                         // muss 2× richtig sein, bevor es aus der Liste fällt
     else if(w[q.key]){ w[q.key]--; if(w[q.key]<=0) delete w[q.key]; }
@@ -327,19 +384,20 @@ const BADGES = [
   {id:"serie3", i:"🔥", t:"3 Tage in Folge", test:()=>dayStreak()>=3},
   {id:"p500",   i:"🏆", t:"500 Punkte",      test:s=>s.punkte>=500},
 ];
-// Antworten aus „Gemischt“ stecken schon in Wochentage/Plus/Einmaleins, daher nur Runden über alle vier Modi zählen
+// Antworten aus „Gemischt“ stecken schon in Wochentage/Plus/Einmaleins, daher dort nicht noch einmal zählen. Blitz hat eigene Zähler.
 function sum(s,f){ return Object.keys(s.modes).filter(m=>f==="runden"||m!=="mix").reduce((a,m)=>a+num(s.modes[m][f]),0); }
 function checkBadges(){ const neu=[]; for(const b of BADGES){ if(!state.abzeichen[b.id] && b.test(state)){ state.abzeichen[b.id]=dayKey(); neu.push(b); } } return neu; }
 
 // ================= Oberfläche =================
 const $ = id=>document.getElementById(id);
 let round = null;   // {mode, i, results:[], q, answered, input}
-let lastKey = null, advanceTimer = null;
+let lastKey = null, advanceTimer = null, blitzTimer = null, blitzGen = 0;
 
 function show(view){
   for(const v of ["vStart","vQuiz","vResult"]) $(v).classList.toggle("hidden", v!==view);
   $("homeBtn").classList.toggle("hidden", view==="vStart");
   document.body.classList.toggle("inq", view!=="vStart");
+  if(view!=="vQuiz") document.body.classList.remove("blitzing");
   window.scrollTo(0,0);
 }
 function updateTop(){
@@ -352,6 +410,7 @@ function renderStart(){
   for(const m in MODES){ const x=state.modes[m]; $("sub-"+m).textContent = x.runden ? "★".repeat(x.best)+"☆".repeat(3-x.best) : "Neu!"; }
   $("rows").innerHTML = [1,2,3,4,5,6,7,8,9,10].map(r=>`<button type="button" class="chip${state.settings.rows.includes(r)?" on":""}" data-row="${r}">${r}er</button>`).join("")
     + `<button type="button" class="chip" data-row="all">Alle</button>`;
+  $("blitzSecs").innerHTML = BLITZ_CHOICES.map(s=>`<button type="button" class="chip${blitzSeconds()===s?" on":""}" data-sek="${s}">${s} Sek.</button>`).join("");
   const r=sum(state,"r"), n=sum(state,"n");
   $("stats").innerHTML = [
     ["⭐", state.punkte, "Punkte"],
@@ -371,27 +430,78 @@ document.getElementById("rows").addEventListener("click", e=>{
     else state.settings.rows=rows.concat(r).sort((a,b)=>a-b); }
   save(); renderStart();
 });
+document.getElementById("blitzSecs").addEventListener("click", e=>{
+  const b=e.target.closest("[data-sek]"); if(!b) return;
+  const n=+b.getAttribute("data-sek");
+  if(!BLITZ_CHOICES.includes(n)) return;
+  state.settings.blitzSek=n; save(); renderStart();
+});
 document.querySelectorAll("[data-mode]").forEach(b=>b.addEventListener("click", ()=>startRound(b.getAttribute("data-mode"))));
-$("homeBtn").onclick = ()=>{ clearTimeout(advanceTimer); round=null; show("vStart"); renderStart(); };
+$("homeBtn").onclick = ()=>{ clearTimeout(advanceTimer); stopBlitz(); round=null; document.body.classList.remove("blitzing"); show("vStart"); renderStart(); };
 $("startBtn").onclick = ()=>{ show("vStart"); renderStart(); };
 $("againBtn").onclick = ()=>{ if(round) startRound(round.mode); };
 
 function startRound(mode){
   clearTimeout(advanceTimer);
+  stopBlitz();
   round = {mode, i:0, results:[], q:null, answered:false, input:""};
   show("vQuiz"); updateTop(); nextQuestion();
 }
 function renderDots(){
   $("dots").innerHTML = Array.from({length:ROUND_LEN},(_,k)=>{
-    const r=round.results[k]; return `<span class="dot${r===true?" r":r===false?" f":k===round.i?" now":""}"></span>`; }).join("");
+    const r=round.results[k]; return `<span class="dot${r===true?" r":r===false?" f":r==="timeout"?" to":k===round.i?" now":""}"></span>`; }).join("");
+}
+function stopBlitz(){
+  blitzGen++;
+  if(blitzTimer){ clearInterval(blitzTimer); blitzTimer=null; }
+}
+function startBlitzClock(){
+  stopBlitz();
+  const bar=$("blitzBar");
+  const on=!!(round && round.mode==="blitz");
+  document.body.classList.toggle("blitzing", on);
+  if(!on){ bar.classList.add("hidden"); return; }
+  const gen=blitzGen;
+  round.t0=nowFn(); round.tLim=blitzSeconds()*1000;
+  bar.classList.remove("hidden","low");
+  paintBlitz();
+  blitzTimer=setInterval(()=>{ if(gen===blitzGen) paintBlitz(); }, 100);
+}
+function paintBlitz(){
+  if(!round || round.mode!=="blitz" || round.answered) return;
+  const left=round.tLim-(nowFn()-round.t0);
+  if(!(left>0)) return timeUp();
+  const shown=Math.ceil(left/1000);
+  $("blitzNum").textContent=String(shown);
+  $("blitzFill").style.width=(Math.min(1, left/round.tLim)*100)+"%";
+  $("blitzBar").classList.toggle("low", left<=3000);
+  $("blitzBar").setAttribute("aria-label", "Noch "+shown+" "+(shown===1?"Sekunde":"Sekunden"));
+}
+function timeUp(){
+  if(!round || round.answered || round.mode!=="blitz") return;
+  round.answered=true;
+  stopBlitz();
+  const q=round.q;
+  round.results[round.i]="timeout";
+  $("blitzNum").textContent="0";
+  $("blitzFill").style.width="0%";
+  $("blitzBar").classList.add("low");
+  $("blitzBar").setAttribute("aria-label", "Zeit um");
+  renderDots();
+  document.querySelectorAll("#answerArea button").forEach(b=>{ b.disabled=true; });
+  const fb=$("fb");
+  fb.className="fb time show";
+  fb.innerHTML=`<div><b>Zeit um! ⏱️</b></div><div>Nicht gelöst.</div><div>${esc(q.text)}<b>${q.answer}</b></div><button type="button" class="next" id="nextBtn">Weiter ➜</button>`;
+  $("nextBtn").onclick=()=>{ round.i++; nextQuestion(); };
 }
 function nextQuestion(){
   clearTimeout(advanceTimer);
+  stopBlitz();
   if(round.i>=ROUND_LEN) return finishRound();
   const q = nextQ(round.mode, state, Math.random, lastKey);
   lastKey = q.key; round.q=q; round.answered=false; round.input="";
   renderDots();
-  $("qtag").textContent = (round.mode==="mix" ? "🎲 " : "") + {tage:"📅 Wochentage", plus:"➕ Plus", mal:"✖️ Einmaleins"}[q.mode] + (q.repeat ? " · nochmal üben" : "");
+  $("qtag").textContent = (round.mode==="mix" ? "🎲 " : "") + {tage:"📅 Wochentage", plus:"➕ Plus", mal:"✖️ Einmaleins", blitz:"⚡ Blitz"}[q.mode] + (q.repeat ? " · nochmal üben" : "");
   const p=$("prompt"); p.className = "prompt" + (q.kind==="zahl" ? " math" : ""); p.innerHTML = q.kind==="zahl" ? esc(q.text).replace(/ = $/," =") : q.text;
   p.classList.remove("pop"); void p.offsetWidth; p.classList.add("pop");
   $("fb").className="fb"; $("fb").innerHTML="";
@@ -404,6 +514,7 @@ function nextQuestion(){
     $("mathArea").classList.remove("hidden"); renderDisplay();
     $("answerArea").innerHTML = `<div class="pad">${[1,2,3,4,5,6,7,8,9].map(d=>`<button type="button" data-key="${d}">${d}</button>`).join("")}<button type="button" class="del" data-key="del" aria-label="Löschen">⌫</button><button type="button" data-key="0">0</button><button type="button" class="okk" data-key="ok">OK</button></div>`;
   }
+  startBlitzClock();
 }
 function renderDisplay(){ const d=$("display"); d.textContent=round.input; d.classList.toggle("empty", !round.input); }
 $("answerArea").addEventListener("click", e=>{
@@ -429,6 +540,8 @@ document.addEventListener("keydown", e=>{
 const LOB = ["Super! 🎉","Toll! ⭐","Klasse! 🌟","Richtig! 👍","Prima! 🎈","Spitze! 🚀","Genau! 😊","Wow! ✨"];
 const TROST = ["Fast! 💛","Nicht schlimm! 💛","Gleich nochmal! 💪"];
 function answer(val, btn){
+  if(!round || round.answered) return;
+  stopBlitz();
   const q=round.q; round.answered=true;
   const ok = val===q.answer;
   round.results[round.i]=ok; recordAnswer(q, ok);
@@ -454,6 +567,7 @@ function answer(val, btn){
 }
 function finishRound(){
   const r = round.results.filter(x=>x===true).length;
+  const offen = round.results.filter(x=>x==="timeout").length;
   const s = starsFor(r, ROUND_LEN);
   const m = state.modes[round.mode]; m.runden++; m.sterne+=s; if(s>m.best) m.best=s;
   if(round.mode==="mix"){ m.n += ROUND_LEN; m.r += r; } // Gemischt zusätzlich als eigener Modus zählen
@@ -462,7 +576,7 @@ function finishRound(){
   show("vResult");
   $("resStars").innerHTML = [0,1,2].map(k=>`<span class="${k<s?"on":""}">⭐</span>`).join("");
   $("resTitle").textContent = s===3 ? "Fantastisch! 🎉" : s===2 ? "Super gemacht! 🌟" : s===1 ? "Gut gemacht! 👍" : "Weiter üben! 💪";
-  $("resText").innerHTML = `${r} von ${ROUND_LEN} richtig` + (s===3 ? "<br>+20 Bonus ⭐" : "");
+  $("resText").innerHTML = `${r} von ${ROUND_LEN} richtig` + (offen ? ` · ${offen} nicht gelöst` : "") + (s===3 ? "<br>+20 Bonus ⭐" : "");
   $("resBadges").innerHTML = neu.map(b=>`<div class="newbadge pop">Neues Abzeichen: ${b.i} ${b.t}</div>`).join("");
   if(s>=2) confetti(40);
 }
@@ -488,8 +602,14 @@ function say(text){
 }
 $("speakBtn").onclick = ()=>{ if(round && round.q) say(round.q.say.replace(/·/g," mal ")); };
 
-window.UA = {TAGE, FOCUS, FOCUS_BASE, FOCUS_KEYS, OTHER_PLUS, shiftDay, dayPath, dayLevel, makeDayQ, makePlusQ, makeMalQ, nextQ, starsFor, shuffleDays, isWeekSequence, defaultState, migrate, STORE_KEY, ROUND_LEN,
+function applyAppVersion(){
+  const ver = "v" + APP_VERSION;
+  document.title = "Übungs-App – 2. Klasse – " + ver;
+  $("title").textContent = "⭐ Übungs-App – " + ver;
+}
+window.UA = {TAGE, FOCUS, FOCUS_BASE, FOCUS_KEYS, OTHER_PLUS, shiftDay, dayPath, dayLevel, makeDayQ, makePlusQ, makeMalQ, makeBlitzQ, nextQ, starsFor, shuffleDays, isWeekSequence, defaultState, migrate, STORE_KEY, ROUND_LEN, APP_VERSION, BLITZ_DEFAULT_SEK, BLITZ_CHOICES, blitzSeconds, tickBlitz:paintBlitz,
   get state(){ return state; }, get round(){ return round; }, setNow:f=>{ nowFn=f||(()=>Date.now()); }, dayStreak};
+applyAppVersion();
 renderStart();
 </script>
 </body>
