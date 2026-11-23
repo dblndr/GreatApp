@@ -5,33 +5,68 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="robots" content="noindex">
-<title>Übungs-App – 2. Klasse</title>
+<title>Übungs-App – v0.2</title>
 <style>
 :root{--bg:#eef6ff;--card:#fff;--ink:#1d2b3a;--muted:#6b7a8c;--blue:#2f7cf6;--green:#22b573;--red:#f2545b;--orange:#ff9f1c;--yellow:#ffd23f;--purple:#8a5cf6;--radius:22px}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Comic Neue",sans-serif;-webkit-text-size-adjust:100%;font-size:22px}
-body{padding:env(safe-area-inset-top) 12px calc(env(safe-area-inset-bottom) + 16px);overflow-x:hidden}
+body{padding:env(safe-area-inset-top) 12px calc(74px + env(safe-area-inset-bottom));overflow-x:hidden}
+body.nodock{padding-bottom:calc(16px + env(safe-area-inset-bottom))}
 .wrap{max-width:760px;margin:0 auto}
-header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 0 4px}
-header h1{font-size:1.05rem;margin:0;line-height:1.15;min-width:0}
+header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 0 2px}
+.brand{min-width:0;flex:1}
+header h1{font-size:1.12rem;margin:0;line-height:1.15}
+.subtitle{margin:1px 0 0;color:var(--muted);font-weight:800;font-size:.78rem}
 button{font:inherit;border:0;border-radius:18px;padding:14px 18px;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;color:var(--ink)}
 button:active{transform:scale(.97)}
-.card{background:var(--card);border-radius:var(--radius);box-shadow:0 6px 20px rgba(30,60,110,.10);padding:20px;margin:12px 0}
-.pill{background:#fff;border-radius:999px;padding:8px 14px;font-weight:800;box-shadow:0 2px 8px rgba(30,60,110,.08);white-space:nowrap}
-.pills{display:flex;gap:8px;align-items:center}
-.home{background:#fff;font-size:1.3rem;padding:8px 14px;box-shadow:0 2px 8px rgba(30,60,110,.08)}
-.hello{font-size:1.6rem;font-weight:800;text-align:center;margin:10px 0 4px}
-.modes{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.mode{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:150px;font-size:1.25rem;font-weight:800;color:#fff;border-radius:24px;box-shadow:0 6px 16px rgba(30,60,110,.15)}
-.mode .i{font-size:2.8rem;line-height:1}
-.mode .s{font-size:.85rem;font-weight:700;opacity:.95}
+button:disabled{cursor:default}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:0 6px 20px rgba(30,60,110,.10);padding:16px;margin:12px 0}
+.pill{background:#fff;border-radius:999px;padding:8px 12px;font-weight:800;box-shadow:0 2px 8px rgba(30,60,110,.08);white-space:nowrap}
+.pills{display:flex;gap:6px;align-items:center}
+.home{background:#fff;font-size:1.3rem;padding:8px 12px;box-shadow:0 2px 8px rgba(30,60,110,.08)}
+.hello{font-size:1.28rem;font-weight:800;text-align:center;margin:2px 0 0}
+.fcard{background:#fff;border-radius:22px;box-shadow:0 6px 20px rgba(30,60,110,.10);padding:12px;margin:6px 0;border-left:8px solid var(--accent,#2f7cf6)}
+.fcard.sa{--accent:#8a5cf6}
+.fcard.daily{--accent:#ff9f1c}
+.fcard h2{margin:0;font-size:1.22rem;line-height:1.2}
+.fcard-top{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+.iconbox{font-size:2rem;width:46px;text-align:center;line-height:1}
+.grow{flex:1;min-width:0}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.modebtn{text-align:left;background:#f6f9fd;border:3px solid #dbe8fb;border-radius:16px;min-height:64px;font-weight:800;padding:8px 10px;width:100%}
+.modebtn .s,.tile .s,.feature .s{display:block;font-weight:700;font-size:.78rem}
+.modebtn.mix{background:#efeaff;border-color:#c4b5fd}
+.modebtn.fresh{background:#fff4e0;border-color:#ff9f1c}
+.neuflag{display:inline-block;background:#ff9f1c;color:#fff;border-radius:999px;font-size:.68rem;padding:2px 7px;margin-left:4px;vertical-align:2px}
+.weiter{width:100%;display:flex;justify-content:space-between;align-items:center;gap:8px;background:#f4f7fb;border-radius:14px;font-weight:800;margin-top:8px;text-align:left}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mode{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:84px;font-size:1.02rem;font-weight:800;color:#fff;border-radius:22px;box-shadow:0 6px 16px rgba(30,60,110,.15);padding:8px}
+.mode .i{font-size:1.85rem;line-height:1}
+.mode .s{font-size:.78rem;font-weight:800;opacity:.95}
+.mode .lbl{display:block;line-height:1.1}
 .m-tage{background:linear-gradient(135deg,#ff9f1c,#ff6f59)}
 .m-plus{background:linear-gradient(135deg,#22b573,#56cc9d)}
 .m-mal{background:linear-gradient(135deg,#2f7cf6,#6aa5ff)}
 .m-mix{background:linear-gradient(135deg,#8a5cf6,#c06cf0)}
-.m-blitz{background:linear-gradient(135deg,#ffd23f,#ff4d6d)}
-.mode .lbl{display:block;line-height:1.15;text-wrap:balance}
-.blitz{display:flex;align-items:center;gap:8px;margin:0}
+.m-blitz{background:linear-gradient(135deg,#ffd23f,#ff4d6d);grid-column:1 / -1;min-height:62px;flex-direction:row;gap:8px}
+.settings{margin-top:10px;background:#f6f9fd;border-radius:14px;padding:8px 10px}
+.settings summary{font-weight:800;cursor:pointer}
+.feature{width:100%;display:flex;align-items:center;gap:12px;text-align:left;background:linear-gradient(135deg,#ff8a3d,#ff4d6d);color:#fff;border-radius:22px;min-height:92px;padding:12px 14px;font-weight:900;box-shadow:0 8px 18px rgba(255,77,109,.28);margin:6px 0}
+.feature .lbl{display:block;font-size:1.35rem;line-height:1.15}
+.feature-signs{font-size:2.5rem;font-weight:900;line-height:.85;background:rgba(255,255,255,.22);border-radius:16px;padding:10px 8px;letter-spacing:-2px}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.tile{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:1px;min-height:68px;background:#fff;border:3px solid #dbe8fb;border-radius:18px;padding:8px 12px;font-weight:800;text-align:left;box-shadow:0 4px 12px rgba(30,60,110,.06);width:100%}
+.tile .i{font-size:1.45rem;line-height:1}
+.tile.wide{grid-column:1 / -1;background:#efeaff;border-color:#c4b5fd;min-height:72px}
+.crumbline{font-weight:800;margin:4px 0 8px}
+.linkish{background:transparent;color:var(--blue);font-weight:800;padding:4px 0}
+#dock{position:fixed;z-index:40;left:0;right:0;bottom:0;display:flex;background:#fff;border-top:1px solid #e3ebf6;height:calc(62px + env(safe-area-inset-bottom));padding:4px 4px env(safe-area-inset-bottom);box-shadow:0 -4px 16px rgba(30,60,110,.06)}
+body.nodock #dock{display:none}
+#dock button{flex:1;background:transparent;color:#6b7a8c;font-weight:800;font-size:.72rem;border-radius:12px;padding:2px 0;display:flex;flex-direction:column;align-items:center;gap:1px}
+#dock button .ic{font-size:1.3rem;line-height:1;width:42px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:12px}
+#dock button.on{color:var(--blue)}
+#dock button.on .ic{background:#e8f1ff}
+.blitz{display:flex;align-items:center;gap:8px;margin:0 0 8px}
 .blitz-ico{font-size:1.2rem;line-height:1}
 .blitz-track{flex:1;height:14px;background:#d9e6f7;border-radius:999px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(30,60,110,.15)}
 .blitz-fill{height:100%;width:100%;background:linear-gradient(90deg,#22b573,#56cc9d);border-radius:999px}
@@ -40,124 +75,233 @@ button:active{transform:scale(.97)}
 body.blitzing .qcard{padding:12px 16px 14px}
 body.blitzing .prompt.math{margin:2px 0}
 body.blitzing .pad{gap:8px}
-body.blitzing .pad button{min-height:70px;padding:10px 8px}
+body.blitzing .pad button{min-height:58px;padding:8px 6px}
 .blitz.low .blitz-num{color:var(--red)}
 .fb.time{background:#e7f1ff;border:3px solid #7aa7f8}
 .dot.to{background:#8eaccf}
 h3.t{margin:0 0 10px;font-size:1.1rem}
+h2.h{margin:0 0 8px;font-size:1.25rem}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{background:#eef2f8;min-width:60px;padding:12px 14px;font-weight:800;font-size:1.1rem}
+.chip{background:#eef2f8;min-width:52px;padding:10px 12px;font-weight:800;font-size:1rem}
 .chip.on{background:var(--blue);color:#fff}
-.small{font-size:.8rem;color:var(--muted)}
-.dots{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:6px 0 2px}
-.dot{width:22px;height:22px;border-radius:50%;background:#dbe5f2}
+.small{font-size:.78rem;color:var(--muted);font-weight:700}
+.dots{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:6px 0 8px}
+.dot{width:16px;height:16px;border-radius:50%;background:#dbe5f2}
 .dot.now{background:#fff;border:4px solid var(--blue)}
 .dot.r{background:var(--green)}
 .dot.f{background:var(--orange)}
 .qcard{text-align:center;position:relative}
-.qtag{font-size:.85rem;font-weight:800;color:var(--blue);letter-spacing:.02em}
-.prompt{font-size:1.75rem;font-weight:800;margin:10px 0;line-height:1.3}
-.prompt.math{font-size:3.4rem;letter-spacing:.02em;margin:6px 0}
+.qhead{display:grid;grid-template-columns:46px 1fr 46px;align-items:center;min-height:42px}
+.qtag{font-size:.85rem;font-weight:800;color:var(--blue);text-align:center}
+.prompt{font-size:1.55rem;font-weight:800;margin:6px 0;line-height:1.25}
+.prompt.math{font-size:3rem;letter-spacing:.02em;margin:6px 0}
+.prompt.word{font-size:1.85rem;line-height:1.25;word-break:break-word}
+.prompt.cmprompt{display:flex;align-items:center;justify-content:center;gap:10px}
 .prompt .d{color:var(--orange)}
-.display{display:inline-block;min-width:150px;font-size:3rem;font-weight:800;border:4px solid #cfdcef;border-radius:18px;padding:4px 18px;min-height:1.5em;background:#f8fbff}
+.cmp-n{font-variant-numeric:tabular-nums;line-height:1}
+.cmp-slot{min-width:1em;text-align:center;color:#9bb0c9;line-height:1}
+.cmp-slot.got{color:var(--green)}
+.display{display:inline-block;min-width:120px;font-size:2.2rem;font-weight:800;border:4px solid #cfdcef;border-radius:18px;padding:2px 14px;min-height:1.3em;background:#f8fbff}
 .display.empty::after{content:"?";color:#c3cfdf}
-.speak{background:var(--yellow);font-size:1.3rem;padding:8px 14px;position:absolute;top:12px;right:12px}
+.speak{background:var(--yellow);font-size:1.15rem;padding:6px 8px;justify-self:end}
 .days{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.days button{font-size:1.4rem;font-weight:800;padding:18px 8px;background:#fff;border:4px solid #dbe5f2;min-height:72px}
+.days button{font-size:1.25rem;font-weight:800;padding:16px 8px;background:#fff;border:4px solid #dbe5f2;min-height:68px}
 .days button:last-child{grid-column:1 / -1}
 .days button.right{background:#e3f8ee;border-color:var(--green)}
 .days button.wrong{background:#fff4e0;border-color:var(--orange)}
-.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:420px;margin:0 auto}
-.pad button{font-size:2rem;font-weight:800;min-height:76px;background:#fff;border:4px solid #dbe5f2}
-.pad button:disabled{opacity:.4}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:420px;margin:0 auto}
+.pad button{font-size:1.65rem;font-weight:800;min-height:62px;background:#fff;border:4px solid #dbe5f2;padding:8px}
+.pad button:disabled{opacity:.45}
 .pad .del{background:#fde8e9;border-color:#f7c3c6}
 .pad .okk{background:var(--green);color:#fff;border-color:var(--green)}
-.fb{border-radius:18px;padding:16px;margin:12px 0 0;font-size:1.3rem;display:none;text-align:center}
+.signs{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.signbtn{background:#fff;border:5px solid #1d2b3a;border-radius:24px;min-height:124px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-shadow:0 6px 14px rgba(30,60,110,.08)}
+.signbtn .sign{font-size:5rem;font-weight:900;line-height:.75;color:#1d2b3a}
+.signbtn .signlbl{font-size:1.05rem;font-weight:800}
+.signbtn.right{background:#e3f8ee;border-color:var(--green)}
+.signbtn.wrong{background:#fff4e0;border-color:var(--orange)}
+.hintline{font-size:.85rem;color:var(--muted);font-weight:800;text-align:center;margin:4px 0 10px}
+.gkeq{font-size:2rem;font-weight:900;margin:6px 0;line-height:1.2}
+.gksign{color:var(--green);font-size:1.3em}
+.hot{color:#c2410c;background:#fff3c4;border-radius:8px;padding:0 3px}
+.stellenrow{display:flex;gap:8px;justify-content:center;margin-top:8px}
+.stellen{flex:1;max-width:190px;background:#fff;border-radius:14px;padding:8px 6px}
+.stellen b{display:block;font-size:1.35rem}
+.rods,.pips{display:flex;flex-wrap:wrap;gap:3px;justify-content:center;min-height:18px;margin-top:4px}
+.rod{width:12px;height:22px;border-radius:4px;background:#2f7cf6;display:inline-block}
+.rod.hun{background:#8a5cf6;width:16px}
+.stellen .pip{width:12px;height:12px;border-radius:50%;background:#ff9f1c;display:inline-block}
+.none{color:#9aa7b6;font-size:.75rem}
+.stellenkey{display:flex;gap:14px;justify-content:center;margin-top:6px;font-size:.75rem;font-weight:800;color:var(--muted)}
+.stellenkey .rod{width:8px;height:14px;vertical-align:-2px}
+.stellenkey .pip{width:10px;height:10px;display:inline-block;border-radius:50%;background:#ff9f1c;vertical-align:-1px}
+.figure{margin:4px 0}
+.hgrid{display:grid;grid-template-columns:repeat(10,1fr);gap:2px}
+.hcell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:800;background:#f3f7fc;border-radius:5px;line-height:1}
+.hcell.star{background:#ffe08a;font-size:.95rem}
+.secret{background:#f8fbff;border:3px dashed #c9d8ea;border-radius:18px;padding:8px 10px 6px}
+.strokes{display:flex;flex-direction:column;align-items:center;min-height:8px}
+.stroke{display:block;width:68%;height:6px;border-radius:99px;background:#2f7cf6;margin:3px 0}
+.secret .pips{min-height:22px;margin-top:4px}
+.secret .pip{width:18px;height:18px;border-radius:50%;background:#ff9f1c;display:inline-block}
+.axis{width:100%;height:auto;display:block;touch-action:none}
+.sky{position:relative;height:46px;margin:0 2px}
+.balloon{position:absolute;top:0;transform:translateX(-50%);background:#fff;border:3px solid #2f7cf6;border-radius:999px;min-width:46px;padding:2px 8px;font-weight:900;font-size:1.2rem;line-height:1.2;text-align:center}
+.balloon:after{content:"";position:absolute;left:50%;top:100%;width:3px;height:14px;background:#2f7cf6;transform:translateX(-50%)}
+.stepper{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+.stepper button{min-height:62px;font-size:1.2rem;font-weight:900;background:#fff;border:4px solid #dbe5f2;border-radius:16px;padding:8px 4px}
+.orderline{min-height:64px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;background:#f6f9fd;border-radius:16px;padding:8px;margin-bottom:10px}
+.orderph{color:var(--muted);font-weight:800;font-size:.9rem}
+.ochip{background:#fff;border:3px solid var(--blue);border-radius:12px;padding:4px 8px;font-weight:900}
+.olt{font-weight:900;color:var(--blue);font-size:1.2rem}
+.orderpool{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.obtn{min-width:68px;min-height:62px;font-size:1.45rem;font-weight:900;background:#fff;border:4px solid #dbe5f2;border-radius:16px;padding:8px 10px}
+.obtn:disabled{opacity:.3}
+.vnrow{display:grid;grid-template-columns:1fr .8fr 1fr;gap:8px;align-items:stretch;margin-bottom:10px}
+.vnbox,.vnmid{background:#fff;border:4px solid #dbe5f2;border-radius:16px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+.vnbox.on{border-color:var(--blue);background:#e8f1ff}
+.vnbox b,.vnmid b{font-size:1.7rem;font-weight:900;min-height:1.15em}
+.vnl,.vnh{font-size:.68rem;font-weight:800;color:var(--muted);line-height:1.1}
+.undo{background:#eef2f8;font-weight:800;margin-top:8px}
+.fb{border-radius:18px;padding:14px;margin:12px 0 0;font-size:1.15rem;display:none;text-align:center}
 .fb.show{display:block}
 .fb.good{background:#e3f8ee;border:3px solid var(--green)}
 .fb.soft{background:#fff4e0;border:3px solid var(--orange)}
-.fb b{font-size:1.5rem}
+.fb b{font-size:1.3rem}
 .week{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin-top:10px}
 .week span{background:#eef2f8;border-radius:10px;padding:6px 8px;font-size:.85rem;font-weight:800}
 .week span.st{background:#dbe8fb;color:var(--blue)}
 .week span.go{background:#fff3c4}
 .week span.ans{background:var(--green);color:#fff}
-.next{background:var(--blue);color:#fff;font-size:1.4rem;font-weight:800;width:100%;margin-top:12px;padding:16px}
+.next{background:var(--blue);color:#fff;font-size:1.25rem;font-weight:800;width:100%;margin-top:12px;padding:14px}
 .result{text-align:center}
-.stars{font-size:4.2rem;letter-spacing:.1em;margin:6px 0}
+.stars{font-size:3.6rem;letter-spacing:.08em;margin:6px 0}
 .stars span{display:inline-block;filter:grayscale(1);opacity:.25}
 .stars span.on{filter:none;opacity:1;animation:pop .6s both}
 .stars span.on:nth-child(2){animation-delay:.25s}.stars span.on:nth-child(3){animation-delay:.5s}
-.big{font-size:2rem;font-weight:800}
+.big{font-size:1.7rem;font-weight:800}
 .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-.row>button{flex:1 1 160px;font-size:1.3rem;font-weight:800;padding:18px}
+.row>button{flex:1 1 140px;font-size:1.15rem;font-weight:800;padding:16px}
 .primary{background:var(--blue);color:#fff}
 .ghost{background:#eef2f8}
-.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;text-align:center}
-.stats div{background:#f6f9fd;border-radius:14px;padding:10px 6px;font-size:.85rem}
-.stats b{display:block;font-size:1.5rem}
+.hero{display:flex;align-items:center;gap:12px}
+.flame{font-size:2.8rem;line-height:1}
+.flame.off{filter:grayscale(1);opacity:.45}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center}
+.stats div{background:#f6f9fd;border-radius:14px;padding:10px 6px;font-size:.8rem}
+.stats b{display:block;font-size:1.15rem}
 .badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
 .badge{background:#f6f9fd;border-radius:14px;padding:10px 4px;text-align:center;font-size:.7rem;line-height:1.25;font-weight:700}
-.badge .i{font-size:2rem;display:block;margin-bottom:2px}
+.badge .i{font-size:1.8rem;display:block;margin-bottom:2px}
 .badge.got{background:#fff8d6;border:2px solid var(--yellow)}
 .badge.off .i{filter:grayscale(1);opacity:.35}
 .badge.off{color:var(--muted)}
 .newbadge{background:#fff8d6;border:3px solid var(--yellow);border-radius:16px;padding:10px;margin-top:12px;font-weight:800}
+.ver{font-size:1.3rem;font-weight:900;margin:0 0 8px}
+.clog{margin:0;padding-left:18px}
+.clog li{margin:6px 0}
 .hidden{display:none!important}
 .pop{animation:pop .5s}
-@keyframes pop{0%{transform:scale(.4)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+@keyframes pop{0%{transform:scale(.4)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+.hcell.star{animation:twinkle 1.1s ease-in-out infinite alternate}
+@keyframes twinkle{from{transform:scale(.92)}to{transform:scale(1.08)}}
 .shake{animation:shake .4s}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 #confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:50}
 #confetti i{position:absolute;top:-30px;font-style:normal;font-size:28px;animation:fall 1.3s ease-in forwards}
 @keyframes fall{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(105vh) rotate(540deg);opacity:.2}}
-@media (prefers-reduced-motion:reduce){#confetti{display:none}.stars span.on,.pop,.shake{animation:none}}
-@media (min-width:700px){.modes{grid-template-columns:repeat(4,1fr)}.days{grid-template-columns:repeat(4,1fr)}.days button:last-child{grid-column:auto}.duo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}.duo>.card{margin:12px 0}}
-@media (max-width:480px){body.inq header h1{display:none}}
-@media (max-width:370px){html,body{font-size:20px}.prompt.math{font-size:2.8rem}}
+@media (prefers-reduced-motion:reduce){#confetti,.hcell.star{animation:none}.stars span.on,.pop,.shake{animation:none}}
+@media (min-width:700px){
+  .modes{grid-template-columns:repeat(3,1fr)}
+  .m-blitz{grid-column:auto;flex-direction:column}
+  .days{grid-template-columns:repeat(4,1fr)}
+  .days button:last-child{grid-column:auto}
+  .tiles{grid-template-columns:repeat(4,1fr)}
+}
+@media (max-width:480px){body.inq .brand{display:none}}
+@media (max-width:400px){
+  html,body{font-size:20px}
+  .prompt.math{font-size:2.5rem}
+  .signbtn{min-height:108px}
+  .signbtn .sign{font-size:4.2rem}
+}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header>
-  <button class="home hidden" id="homeBtn" type="button" aria-label="Zum Start">🏠</button>
-  <h1 id="title">⭐ Übungs-App</h1>
+  <button class="home hidden" id="homeBtn" type="button" data-go="start" aria-label="Zum Start">🏠</button>
+  <div class="brand">
+    <h1 id="title">Übungs-App – v0.2</h1>
+    <p class="subtitle">2. Klasse</p>
+  </div>
   <div class="pills"><span class="pill" id="pointsPill">⭐ 0</span><span class="pill" id="streakPill">🔥 0</span></div>
 </header>
 
-<!-- Startbildschirm -->
 <section id="vStart">
   <div class="hello">Hallo! Was übst du heute? 😊</div>
-  <div class="modes">
-    <button class="mode m-tage" type="button" data-mode="tage"><span class="i">📅</span>Wochentage<span class="s" id="sub-tage"></span></button>
-    <button class="mode m-plus" type="button" data-mode="plus"><span class="i">➕</span>Plus bis 20<span class="s" id="sub-plus"></span></button>
-    <button class="mode m-mal" type="button" data-mode="mal"><span class="i">✖️</span>Einmaleins<span class="s" id="sub-mal"></span></button>
-    <button class="mode m-mix" type="button" data-mode="mix"><span class="i">🎲</span>Gemischt<span class="s" id="sub-mix"></span></button>
-    <button class="mode m-blitz" type="button" data-mode="blitz"><span class="i">⚡</span><span class="lbl">Blitz-Rechner</span><span class="s" id="sub-blitz"></span></button>
-  </div>
-  <div class="card">
-    <h3 class="t">✖️ Einmaleins-Reihen</h3>
-    <div class="chips" id="rows"></div>
-    <div class="small" style="margin-top:8px">Tippe auf eine Reihe. Blau = wird geübt.</div>
-  </div>
-  <div class="card">
-    <h3 class="t">⚡ Blitz-Zeit</h3>
-    <div class="chips" id="blitzSecs"></div>
-    <div class="small" style="margin-top:8px">Sekunden pro Aufgabe. Ist die Zeit um, gilt sie als nicht gelöst.</div>
-  </div>
-  <div class="duo">
-    <div class="card">
-      <h3 class="t">📊 Das hast du geschafft</h3>
-      <div class="stats" id="stats"></div>
+  <button type="button" class="weiter hidden" id="weiterBtn" data-mode="">▶ Weiter</button>
+
+  <article class="fcard sa">
+    <div class="fcard-top">
+      <span class="iconbox" aria-hidden="true">📘</span>
+      <div class="grow">
+        <h2>Schulaufgaben <span class="neuflag">NEU</span></h2>
+        <div class="small">Zahlen von 0 bis 100</div>
+      </div>
     </div>
-    <div class="card">
-      <h3 class="t">🏅 Abzeichen</h3>
-      <div class="badges" id="badges"></div>
+    <div class="pair">
+      <button type="button" class="modebtn mix" data-mode="schul"><span>🎲 Gemischt</span><span class="s" data-sub="schul"></span></button>
+      <button type="button" class="modebtn fresh" data-mode="gk"><span>🔷 Größer / kleiner</span><span class="s" data-sub="gk"></span></button>
     </div>
+    <button type="button" class="weiter" data-go="schul"><span>Alle Aufgaben</span><span class="small">9 Arten</span></button>
+  </article>
+
+  <article class="fcard daily">
+    <div class="fcard-top">
+      <span class="iconbox" aria-hidden="true">⭐</span>
+      <div class="grow">
+        <h2>Täglich üben</h2>
+        <div class="small">Tage, Plus, Mal, Blitz</div>
+      </div>
+    </div>
+    <div class="modes">
+      <button class="mode m-tage" type="button" data-mode="tage"><span class="i">📅</span><span class="lbl">Wochentage</span><span class="s" data-sub="tage"></span></button>
+      <button class="mode m-plus" type="button" data-mode="plus"><span class="i">➕</span><span class="lbl">Plus bis 20</span><span class="s" data-sub="plus"></span></button>
+      <button class="mode m-mal" type="button" data-mode="mal"><span class="i">✖️</span><span class="lbl">Einmaleins</span><span class="s" data-sub="mal"></span></button>
+      <button class="mode m-mix" type="button" data-mode="mix"><span class="i">🎲</span><span class="lbl">Gemischt</span><span class="s" data-sub="mix"></span></button>
+      <button class="mode m-blitz" type="button" data-mode="blitz"><span class="i">⚡</span><span class="lbl">Blitz-Rechner</span><span class="s" data-sub="blitz"></span></button>
+    </div>
+    <details class="settings">
+      <summary>Reihen und Blitz-Zeit</summary>
+      <h3 class="t" style="margin-top:10px">✖️ Einmaleins-Reihen</h3>
+      <div class="chips" id="rows"></div>
+      <h3 class="t" style="margin-top:12px">⚡ Blitz-Zeit</h3>
+      <div class="chips" id="blitzSecs"></div>
+      <p class="small">Ist die Zeit um, gilt die Aufgabe als nicht gelöst.</p>
+    </details>
+  </article>
+</section>
+
+<section id="vSchul" class="hidden">
+  <p class="crumbline"><button type="button" class="linkish" data-go="start">🏠 Start</button> › Schulaufgaben</p>
+  <button type="button" class="feature" data-mode="gk">
+    <span class="feature-signs" aria-hidden="true">&lt; &gt;</span>
+    <span><span class="lbl">Größer oder kleiner</span><span class="s" data-sub="gk"></span></span>
+  </button>
+  <div class="tiles">
+    <button type="button" class="tile wide" data-mode="schul"><span class="i">🎲</span>Alles gemischt<span class="s" data-sub="schul"></span></button>
+    <button type="button" class="tile" data-mode="hund"><span class="i">💯</span>Hunderterfeld<span class="s" data-sub="hund"></span></button>
+    <button type="button" class="tile" data-mode="geheim"><span class="i">✍️</span>Geheimschrift<span class="s" data-sub="geheim"></span></button>
+    <button type="button" class="tile" data-mode="wort"><span class="i">🔤</span>Zahlwörter<span class="s" data-sub="wort"></span></button>
+    <button type="button" class="tile" data-mode="vn"><span class="i">↔️</span>Vorgänger<span class="s" data-sub="vn"></span></button>
+    <button type="button" class="tile" data-mode="ordn"><span class="i">📶</span>Ordnen<span class="s" data-sub="ordn"></span></button>
+    <button type="button" class="tile" data-mode="strahl"><span class="i">📏</span>Zahlenstrahl<span class="s" data-sub="strahl"></span></button>
+    <button type="button" class="tile" data-mode="zehn"><span class="i">🔟</span>Zum Zehner<span class="s" data-sub="zehn"></span></button>
+    <button type="button" class="tile" data-mode="raetsel"><span class="i">🧩</span>Zahlenrätsel<span class="s" data-sub="raetsel"></span></button>
   </div>
 </section>
 
-<!-- Üben -->
 <section id="vQuiz" class="hidden">
   <div class="dots" id="dots"></div>
   <div class="blitz hidden" id="blitzBar" role="timer" aria-live="off" aria-label="Restzeit">
@@ -166,8 +310,12 @@ h3.t{margin:0 0 10px;font-size:1.1rem}
     <span class="blitz-num" id="blitzNum">8</span>
   </div>
   <div class="card qcard" id="qcard">
-    <button class="speak hidden" id="speakBtn" type="button" aria-label="Vorlesen">🔊</button>
-    <div class="qtag" id="qtag"></div>
+    <div class="qhead">
+      <span></span>
+      <div class="qtag" id="qtag"></div>
+      <button class="speak hidden" id="speakBtn" type="button" aria-label="Vorlesen">🔊</button>
+    </div>
+    <div id="figure" class="figure hidden"></div>
     <div class="prompt" id="prompt"></div>
     <div id="mathArea" class="hidden"><div class="display empty" id="display"></div></div>
     <div class="fb" id="fb"></div>
@@ -175,35 +323,81 @@ h3.t{margin:0 0 10px;font-size:1.1rem}
   <div id="answerArea"></div>
 </section>
 
-<!-- Ergebnis -->
 <section id="vResult" class="hidden">
   <div class="card result">
     <div class="stars" id="resStars"></div>
     <div class="big" id="resTitle"></div>
-    <div class="prompt" id="resText" style="font-size:1.4rem"></div>
+    <div class="prompt" id="resText" style="font-size:1.3rem"></div>
     <div id="resBadges"></div>
     <div class="row">
       <button class="primary" type="button" id="againBtn">🔁 Nochmal</button>
-      <button class="ghost" type="button" id="startBtn">🏠 Start</button>
+      <button class="ghost" type="button" data-go="start">🏠 Start</button>
     </div>
   </div>
 </section>
+
+<section id="vStats" class="hidden">
+  <div class="card">
+    <div class="hero">
+      <div class="flame" id="flame">🔥</div>
+      <div>
+        <div class="big" id="statStreak">0 Tage</div>
+        <div class="small" id="statStreakMsg"></div>
+      </div>
+    </div>
+    <div class="stats" id="stats" style="margin-top:12px"></div>
+  </div>
+</section>
+
+<section id="vBadges" class="hidden">
+  <div class="card">
+    <h2 class="h">Abzeichen</h2>
+    <div class="badges" id="badges"></div>
+  </div>
+</section>
+
+<section id="vMore" class="hidden">
+  <div class="card">
+    <p class="ver" id="moreVer">Übungs-App – v0.2</p>
+    <ul class="clog">
+      <li><b>v0.2</b> Schulaufgaben, Zahlen 0–100. Größer und kleiner extra üben.</li>
+      <li><b>v0.1</b> Blitz-Rechner, Wochentage, Plus, Einmaleins.</li>
+    </ul>
+    <p class="small">Punkte und Sterne bleiben auf diesem Gerät.</p>
+  </div>
+</section>
 </div>
+
+<nav id="dock" aria-label="Hauptnavigation">
+  <button type="button" data-go="start" class="on" aria-current="page"><span class="ic" aria-hidden="true">🏠</span>Start</button>
+  <button type="button" data-go="stats"><span class="ic" aria-hidden="true">📊</span>Statistik</button>
+  <button type="button" data-go="badges"><span class="ic" aria-hidden="true">🏅</span>Abzeichen</button>
+  <button type="button" data-go="more"><span class="ic" aria-hidden="true">☰</span>Mehr</button>
+</nav>
 <div id="confetti"></div>
 
+<script src="schulaufgaben.js"></script>
 <script>
 "use strict";
+if(!window.SA) throw new Error("schulaufgaben.js fehlt");
+const SA = window.SA;
 // ================= Logik (ohne Bildschirm, testbar über window.UA) =================
 const STORE_KEY = "uebungs-app-2kl-v1";
-// Einzige sichtbare App-Version. Nächste Live-Verbesserung: +0.1 (v0.2, v0.3, …).
-// Unabhängig vom Speicherformat (state.version bleibt 1, Schlüssel bleibt STORE_KEY).
-const APP_VERSION = "0.1";
+// Einzige sichtbare App-Version. Titel und Überschrift werden daraus gesetzt.
+// Speicherformat bleibt version 1, Schlüssel bleibt STORE_KEY.
+const APP_VERSION = "0.2";
 const TAGE = ["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"];
 const ROUND_LEN = 10;
 const BLITZ_DEFAULT_SEK = 8;
 const BLITZ_CHOICES = [6, 8, 10];
-const MODES = {tage:"Wochentage", plus:"Plus bis 20", mal:"Einmaleins", mix:"Gemischt", blitz:"Blitz-Rechner"};
-// Die „fiesen“ Plusaufgaben (ohne Tauschaufgaben); Tauschaufgaben werden ergänzt
+const SA_MODES = ["schul","gk","hund","geheim","wort","vn","ordn","strahl","zehn","raetsel"];
+const SA_TYPE = {gk:"vergleich", hund:"hunderter", geheim:"geheim", wort:"wort", vn:"vn", ordn:"ordnen", strahl:"strahl", zehn:"zehner", raetsel:"raetsel"};
+const SA_ICON = {hunderter:"💯", geheim:"✍️", wort:"🔤", vergleich:"🔷", vn:"↔️", ordnen:"📶", strahl:"📏", zehner:"🔟", raetsel:"🧩"};
+const MODES = {
+  tage:"Wochentage", plus:"Plus bis 20", mal:"Einmaleins", mix:"Gemischt", blitz:"Blitz-Rechner",
+  schul:"Schulaufgaben", gk:"Größer/kleiner", hund:"Hunderterfeld", geheim:"Geheimschrift",
+  wort:"Zahlwörter", vn:"Vorgänger", ordn:"Ordnen", strahl:"Zahlenstrahl", zehn:"Zum Zehner", raetsel:"Rätsel"
+};
 const FOCUS_BASE = [[4,7],[4,8],[6,7],[6,8],[8,9],[7,9],[7,8],[3,8]];
 const FOCUS = (()=>{ const o=[]; for(const [a,b] of FOCUS_BASE){ o.push([a,b]); o.push([b,a]); } return o; })();
 const FOCUS_KEYS = new Set(FOCUS.map(([a,b])=>a+"+"+b));
@@ -215,11 +409,8 @@ const mod7 = n => ((n%7)+7)%7;
 function shiftDay(i, n){ return mod7(i+n); }
 function pick(arr, rnd){ return arr[Math.floor(rnd()*arr.length)]; }
 function rint(lo, hi, rnd){ return lo + Math.floor(rnd()*(hi-lo+1)); }
-// Stufe der Wochentag-Fragen: wächst mit der Zahl richtiger Antworten
 function dayLevel(correct){ return correct < 8 ? 1 : correct < 20 ? 2 : 3; }
-// Weg von Start zum Ziel (für die Erklärung bei Fehlern)
 function dayPath(start, n){ const p=[start]; const s=n>=0?1:-1; for(let k=1;k<=Math.abs(n);k++) p.push(shiftDay(start, s*k)); return p; }
-const ZAHLWORT = ["","einen","zwei","drei","vier","fünf","sechs"];
 function makeDayQ(level, rnd){
   rnd = rnd || Math.random;
   const types = level<=1 ? ["nach","vor","nach","morgen"]
@@ -236,27 +427,24 @@ function makeDayQ(level, rnd){
   else {
     const back = rnd() < 0.5;
     if(level===2){
-      // Stufe 2: 2–3 Tage, noch ohne Sprung über das Wochenende hinweg
       const k = rint(2,3,rnd);
       start = back ? rint(k,6,rnd) : rint(0,6-k,rnd);
       n = back ? -k : k;
     } else {
       const k = rint(1,6,rnd);
       n = back ? -k : k;
-      // Stufe 3: in etwa der Hälfte der Fälle bewusst über die Wochengrenze
       if(rnd() < 0.5){ start = back ? rint(0,k-1,rnd) : rint(7-k,6,rnd); }
     }
     const k = Math.abs(n);
     text = `Welcher Tag ist <b>${k} ${k===1?"Tag":"Tage"}</b> ${n>0?"nach":"vor"} <span class="d">${TAGE[start]}</span>?`;
   }
   const answer = shiftDay(start, n);
-  return {mode:"tage", kind:"tag", type, start, n, answer, text, key:"t:"+type+":"+start+":"+n, say:text.replace(/<[^>]+>/g,"")};
+  return {mode:"tage", kind:"tag", type:null, start, n, answer, text, key:"t:"+type+":"+start+":"+n, say:text.replace(/<[^>]+>/g,"")};
 }
 function plusQ(a,b){ return {mode:"plus", kind:"zahl", a, b, answer:a+b, key:a+"+"+b, focus:FOCUS_KEYS.has(a+"+"+b), text:`${a} + ${b} = `, say:`${a} plus ${b}`}; }
 function malQ(a,b){ return {mode:"mal", kind:"zahl", a, b, answer:a*b, key:a+"·"+b, text:`${a} · ${b} = `, say:`${a} mal ${b}`}; }
 function parsePlus(k){ const m=/^(\d+)\+(\d+)$/.exec(k); return m ? [ +m[1], +m[2] ] : null; }
 function parseMal(k){ const m=/^(\d+)·(\d+)$/.exec(k); return m ? [ +m[1], +m[2] ] : null; }
-// repeat: Liste von Aufgaben-Schlüsseln, die zuletzt falsch waren
 function makePlusQ(rnd, repeat){
   rnd = rnd || Math.random;
   const rep = (repeat||[]).map(parsePlus).filter(p=>p && p[0]+p[1]<=20);
@@ -273,7 +461,6 @@ function makeMalQ(rnd, rows, repeat){
   const r = pick(rows, rnd), m = rint(1,10,rnd);
   return rnd()<0.5 ? malQ(m, r) : malQ(r, m);
 }
-// Blitz: Plus und Einmaleins im Wechsel. Wiederholungen nur aus eigenen Fehlversuchen, nicht aus Zeitablauf.
 function makeBlitzQ(rnd, rows, repeat){
   rnd = rnd || Math.random;
   rows = (rows && rows.length) ? rows.filter(r=>r>=1&&r<=10) : [1,2,3,4,5,6,7,8,9,10];
@@ -293,23 +480,28 @@ function makeBlitzQ(rnd, rows, repeat){
   q.mode = "blitz";
   return q;
 }
-// Nächste Aufgabe für einen Modus; vermeidet die direkte Wiederholung derselben Aufgabe
+function makeSchulRoundQ(mode, st, rnd){
+  const type = SA_TYPE[mode] || null;
+  const raw = mode==="gk" ? Object.keys(st.wdh.gk||{}) : Object.keys(st.wdh.schul||{});
+  const q = type ? SA.makeTypeQ(type, rnd, raw) : SA.makeSchulQ(rnd, raw);
+  q.mode = mode;
+  return q;
+}
 function nextQ(mode, st, rnd, lastKey){
   rnd = rnd || Math.random;
   for(let i=0;i<12;i++){
     let q;
     if(mode==="blitz") q = makeBlitzQ(rnd, st.settings.rows, Object.keys(st.wdh.blitz));
+    else if(mode==="schul" || SA_TYPE[mode]) q = makeSchulRoundQ(mode, st, rnd);
     else {
       const m = mode==="mix" ? pick(["tage","plus","mal"], rnd) : mode;
       if(m==="tage") q = makeDayQ(dayLevel(st.modes.tage.r), rnd);
       else if(m==="plus") q = makePlusQ(rnd, Object.keys(st.wdh.plus));
       else q = makeMalQ(rnd, st.settings.rows, Object.keys(st.wdh.mal));
     }
-    if(q.key!==lastKey || i===11) return q;
+    if(q && (q.key!==lastKey || i===11)) return q;
   }
 }
-// Tag-Buttons mischen (Fisher-Yates). Mo–So, eine Rotation davon (z. B. Mi–Di) oder die rückwärts
-// gelesene Woche verraten Vorgänger/Nachfolger und werden verworfen, ebenso die Reihenfolge der vorigen Aufgabe.
 function isWeekSequence(order){
   if(order.length!==7) return false;
   const fwd = order.every((d,k)=>d===mod7(order[0]+k)), back = order.every((d,k)=>d===mod7(order[0]-k));
@@ -322,11 +514,10 @@ function shuffleDays(rnd, prev){
     for(let i=o.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [o[i],o[j]]=[o[j],o[i]]; }
     if(!isWeekSequence(o) && !(prev && prev.join()===o.join())) return o;
   }
-  return [0,3,6,2,5,1,4]; // Notfall (nur bei defektem Zufall): feste, nicht ablesbare Reihenfolge
+  return [0,3,6,2,5,1,4];
 }
 function starsFor(correct, total){ const p = total ? correct/total : 0; return p>=0.9 ? 3 : p>=0.7 ? 2 : p>=0.4 ? 1 : 0; }
 
-// ---------- Datum / Zustand ----------
 let nowFn = ()=>Date.now();
 const pad2 = n=>String(n).padStart(2,"0");
 function dayKey(ts){ const d=new Date(ts===undefined?nowFn():ts); return d.getFullYear()+"-"+pad2(d.getMonth()+1)+"-"+pad2(d.getDate()); }
@@ -334,7 +525,12 @@ function addDays(k,n){ const [y,m,d]=k.split("-").map(Number); const x=new Date(
 const isObj = x=> !!x && typeof x==="object" && !Array.isArray(x);
 const num = x=>{ const n=Number(x); return isFinite(n)&&n>0 ? n : 0; };
 const emptyMode = ()=>({runden:0, n:0, r:0, sterne:0, best:0});
-const defaultState = ()=>({version:1, punkte:0, modes:{tage:emptyMode(), plus:emptyMode(), mal:emptyMode(), mix:emptyMode(), blitz:emptyMode()}, tage:{}, wdh:{plus:{}, mal:{}, blitz:{}}, settings:{rows:[1,2,3,4,5,6,7,8,9,10], blitzSek:BLITZ_DEFAULT_SEK}, abzeichen:{}});
+function emptyModes(){
+  const o={tage:emptyMode(), plus:emptyMode(), mal:emptyMode(), mix:emptyMode(), blitz:emptyMode()};
+  for(const m of SA_MODES) o[m]=emptyMode();
+  return o;
+}
+const defaultState = ()=>({version:1, punkte:0, modes:emptyModes(), tage:{}, wdh:{plus:{}, mal:{}, blitz:{}, schul:{}, gk:{}}, settings:{rows:[1,2,3,4,5,6,7,8,9,10], blitzSek:BLITZ_DEFAULT_SEK}, abzeichen:{}, ui:{lastMode:""}});
 function blitzSeconds(){ const n=Number(state.settings && state.settings.blitzSek); return BLITZ_CHOICES.includes(n) ? n : BLITZ_DEFAULT_SEK; }
 function migrate(raw){
   const s = defaultState();
@@ -342,10 +538,11 @@ function migrate(raw){
   s.punkte = num(raw.punkte);
   if(isObj(raw.modes)) for(const m in s.modes) if(isObj(raw.modes[m])) for(const f in s.modes[m]) s.modes[m][f]=num(raw.modes[m][f]);
   if(isObj(raw.tage)) s.tage = raw.tage;
-  if(isObj(raw.wdh)){ for(const m of ["plus","mal","blitz"]) if(isObj(raw.wdh[m])) s.wdh[m]=raw.wdh[m]; }
+  if(isObj(raw.wdh)){ for(const m of ["plus","mal","blitz","schul","gk"]) if(isObj(raw.wdh[m])) s.wdh[m]=raw.wdh[m]; }
   if(isObj(raw.settings) && Array.isArray(raw.settings.rows)){ const r=raw.settings.rows.filter(x=>Number.isInteger(x)&&x>=1&&x<=10); if(r.length) s.settings.rows=r; }
   if(isObj(raw.settings) && BLITZ_CHOICES.includes(Number(raw.settings.blitzSek))) s.settings.blitzSek = Number(raw.settings.blitzSek);
   if(isObj(raw.abzeichen)) s.abzeichen = raw.abzeichen;
+  if(isObj(raw.ui) && typeof raw.ui.lastMode==="string" && MODES[raw.ui.lastMode]) s.ui.lastMode = raw.ui.lastMode;
   return s;
 }
 function load(){
@@ -357,20 +554,21 @@ function load(){
 function save(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){} }
 let state = load();
 
-// Serie: Tage in Folge mit mindestens einer Runde (heute oder gestern zählt als „läuft noch“)
 function dayStreak(){
   let k = dayKey(); if(!state.tage[k]) k = addDays(k,-1);
   let n=0; while(state.tage[k]){ n++; k=addDays(k,-1); }
   return n;
 }
-// Eine Antwort verbuchen (für Wiederholung falscher Aufgaben)
+function bumpWdh(bucket, key, ok){
+  if(!bucket || !key) return;
+  if(!ok) bucket[key] = 2;
+  else if(bucket[key]){ bucket[key]--; if(bucket[key]<=0) delete bucket[key]; }
+}
 function recordAnswer(q, ok){
-  const m = state.modes[q.mode]; m.n++; if(ok) m.r++;
-  if((q.mode==="plus"||q.mode==="mal"||q.mode==="blitz") && state.wdh[q.mode]){
-    const w = state.wdh[q.mode];
-    if(!ok) w[q.key] = 2;                         // muss 2× richtig sein, bevor es aus der Liste fällt
-    else if(w[q.key]){ w[q.key]--; if(w[q.key]<=0) delete w[q.key]; }
-  }
+  const m = state.modes[q.mode]; if(m){ m.n++; if(ok) m.r++; }
+  if(q.mode==="plus"||q.mode==="mal"||q.mode==="blitz") bumpWdh(state.wdh[q.mode], q.key, ok);
+  if(q.mode==="gk"){ bumpWdh(state.wdh.gk, q.key, ok); bumpWdh(state.wdh.schul, q.key, ok); }
+  else if(SA_MODES.indexOf(q.mode)>=0) bumpWdh(state.wdh.schul, q.key, ok);
   const t = state.tage[dayKey()] || (state.tage[dayKey()] = {n:0, r:0});
   t.n++; if(ok) t.r++;
 }
@@ -383,42 +581,86 @@ const BADGES = [
   {id:"mal",    i:"✖️", t:"Mal-Profi",        test:s=>s.modes.mal.r>=50},
   {id:"serie3", i:"🔥", t:"3 Tage in Folge", test:()=>dayStreak()>=3},
   {id:"p500",   i:"🏆", t:"500 Punkte",      test:s=>s.punkte>=500},
+  {id:"schul1", i:"📘", t:"Schulaufgaben",   test:s=>s.modes.schul.runden>=1},
+  {id:"gk20",   i:"🔷", t:"20 Zeichen richtig", test:s=>s.modes.gk && s.modes.gk.r>=20},
+  {id:"gk3",    i:"🎯", t:"3 Sterne Zeichen", test:s=>s.modes.gk && s.modes.gk.best>=3},
 ];
-// Antworten aus „Gemischt“ stecken schon in Wochentage/Plus/Einmaleins, daher dort nicht noch einmal zählen. Blitz hat eigene Zähler.
 function sum(s,f){ return Object.keys(s.modes).filter(m=>f==="runden"||m!=="mix").reduce((a,m)=>a+num(s.modes[m][f]),0); }
 function checkBadges(){ const neu=[]; for(const b of BADGES){ if(!state.abzeichen[b.id] && b.test(state)){ state.abzeichen[b.id]=dayKey(); neu.push(b); } } return neu; }
 
-// ================= Oberfläche =================
 const $ = id=>document.getElementById(id);
-let round = null;   // {mode, i, results:[], q, answered, input}
+let round = null;
 let lastKey = null, advanceTimer = null, blitzTimer = null, blitzGen = 0;
 
-function show(view){
-  for(const v of ["vStart","vQuiz","vResult"]) $(v).classList.toggle("hidden", v!==view);
-  $("homeBtn").classList.toggle("hidden", view==="vStart");
-  document.body.classList.toggle("inq", view!=="vStart");
-  if(view!=="vQuiz") document.body.classList.remove("blitzing");
-  window.scrollTo(0,0);
+function showPage(name){
+  clearTimeout(advanceTimer);
+  stopBlitz();
+  const live = name==="quiz" || name==="result";
+  if(!live) round = null;
+  document.body.classList.toggle("nodock", live);
+  document.body.classList.toggle("inq", name!=="start");
+  if(!live) document.body.classList.remove("blitzing");
+  const map = {start:"vStart", schul:"vSchul", quiz:"vQuiz", result:"vResult", stats:"vStats", badges:"vBadges", more:"vMore"};
+  const on = map[name] || "vStart";
+  for(const id of Object.keys(map).map(k=>map[k])){
+    const node = $(id); if(node) node.classList.toggle("hidden", id!==on);
+  }
+  $("homeBtn").classList.toggle("hidden", name==="start");
+  document.querySelectorAll("#dock button").forEach(b=>{
+    const cur = b.getAttribute("data-go")===name;
+    b.classList.toggle("on", cur);
+    if(cur) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current");
+  });
+  if(name==="start") renderStart();
+  if(name==="stats") renderStats();
+  if(name==="badges") renderBadges();
+  try{ window.scrollTo(0,0); }catch(e){}
 }
 function updateTop(){
   $("pointsPill").textContent = "⭐ " + state.punkte;
-  const s = dayStreak(); $("streakPill").textContent = "🔥 " + s;
+  const s = dayStreak();
+  $("streakPill").textContent = "🔥 " + s;
   $("streakPill").title = s===1 ? "1 Tag in Folge geübt" : s+" Tage in Folge geübt";
+}
+function starText(m){
+  const x = state.modes[m];
+  if(!x || !x.runden) return "Neu!";
+  return "★".repeat(x.best)+"☆".repeat(Math.max(0, 3-x.best));
 }
 function renderStart(){
   updateTop();
-  for(const m in MODES){ const x=state.modes[m]; $("sub-"+m).textContent = x.runden ? "★".repeat(x.best)+"☆".repeat(3-x.best) : "Neu!"; }
+  document.querySelectorAll("[data-sub]").forEach(el=>{ el.textContent = starText(el.getAttribute("data-sub")); });
+  const last = state.ui && state.ui.lastMode;
+  const w = $("weiterBtn");
+  if(last && MODES[last]){
+    w.classList.remove("hidden");
+    w.setAttribute("data-mode", last);
+    w.textContent = "▶ Weiter: " + MODES[last];
+  } else w.classList.add("hidden");
   $("rows").innerHTML = [1,2,3,4,5,6,7,8,9,10].map(r=>`<button type="button" class="chip${state.settings.rows.includes(r)?" on":""}" data-row="${r}">${r}er</button>`).join("")
     + `<button type="button" class="chip" data-row="all">Alle</button>`;
   $("blitzSecs").innerHTML = BLITZ_CHOICES.map(s=>`<button type="button" class="chip${blitzSeconds()===s?" on":""}" data-sek="${s}">${s} Sek.</button>`).join("");
+}
+function renderStats(){
+  updateTop();
+  const streak = dayStreak();
+  $("statStreak").textContent = streak===1 ? "1 Tag" : streak+" Tage";
+  $("statStreakMsg").textContent = streak ? "Tage in Folge geübt" : "Heute eine Runde schafft den Start";
+  $("flame").classList.toggle("off", streak<1);
   const r=sum(state,"r"), n=sum(state,"n");
-  $("stats").innerHTML = [
+  const blocks = [
     ["⭐", state.punkte, "Punkte"],
     ["✅", r, "richtig"],
     ["🎯", sum(state,"runden"), "Runden"],
-    ["🔥", dayStreak(), "Tage in Folge"],
-  ].map(([i,v,l])=>`<div><b>${i} ${v}</b>${l}</div>`).join("")
-   + Object.keys(MODES).map(m=>{ const x=state.modes[m]; const p=x.n?Math.round(100*x.r/x.n):0; return `<div><b style="font-size:1.1rem">${MODES[m]}</b>${x.runden} ${x.runden===1?"Runde":"Runden"} · ${x.n?p+" %":"–"}</div>`; }).join("");
+    ["🔥", streak, "Tage in Folge"],
+  ].map(([i,v,l])=>`<div><b>${i} ${v}</b>${l}</div>`).join("");
+  const rows = Object.keys(MODES).map(m=>{
+    const x=state.modes[m]; const p=x.n?Math.round(100*x.r/x.n):0;
+    return `<div><b>${MODES[m]}</b>${x.runden} ${x.runden===1?"Runde":"Runden"} · ${x.n?p+" %":"–"}</div>`;
+  }).join("");
+  $("stats").innerHTML = blocks + rows;
+}
+function renderBadges(){
   $("badges").innerHTML = BADGES.map(b=>`<div class="badge ${state.abzeichen[b.id]?"got":"off"}"><span class="i">${b.i}</span>${b.t}</div>`).join("");
 }
 document.getElementById("rows").addEventListener("click", e=>{
@@ -427,7 +669,7 @@ document.getElementById("rows").addEventListener("click", e=>{
   if(v==="all") state.settings.rows=[1,2,3,4,5,6,7,8,9,10];
   else { const r=+v, rows=state.settings.rows;
     if(rows.includes(r)){ if(rows.length>1) state.settings.rows=rows.filter(x=>x!==r); }
-    else state.settings.rows=rows.concat(r).sort((a,b)=>a-b); }
+    else state.settings.rows=rows.concat(r).sort((a,c)=>a-c); }
   save(); renderStart();
 });
 document.getElementById("blitzSecs").addEventListener("click", e=>{
@@ -436,16 +678,35 @@ document.getElementById("blitzSecs").addEventListener("click", e=>{
   if(!BLITZ_CHOICES.includes(n)) return;
   state.settings.blitzSek=n; save(); renderStart();
 });
-document.querySelectorAll("[data-mode]").forEach(b=>b.addEventListener("click", ()=>startRound(b.getAttribute("data-mode"))));
-$("homeBtn").onclick = ()=>{ clearTimeout(advanceTimer); stopBlitz(); round=null; document.body.classList.remove("blitzing"); show("vStart"); renderStart(); };
-$("startBtn").onclick = ()=>{ show("vStart"); renderStart(); };
+document.body.addEventListener("click", e=>{
+  const go=e.target.closest("[data-go]");
+  if(go && !e.target.closest("[data-mode]")){ showPage(go.getAttribute("data-go")); return; }
+  const mode=e.target.closest("[data-mode]");
+  if(mode) startRound(mode.getAttribute("data-mode"));
+});
 $("againBtn").onclick = ()=>{ if(round) startRound(round.mode); };
 
 function startRound(mode){
+  if(!MODES[mode]) return;
   clearTimeout(advanceTimer);
   stopBlitz();
-  round = {mode, i:0, results:[], q:null, answered:false, input:""};
-  show("vQuiz"); updateTop(); nextQuestion();
+  if(!state.ui) state.ui={lastMode:""};
+  state.ui.lastMode=mode;
+  save();
+  round = {mode:mode, i:0, results:[], q:null, answered:false, input:""};
+  showPage("quiz");
+  updateTop();
+  nextQuestion();
+}
+function preview(mode, q){
+  clearTimeout(advanceTimer);
+  stopBlitz();
+  q = Object.assign({}, q, {mode:mode});
+  round = {mode:mode, i:0, results:[], q:q, answered:false, input:""};
+  lastKey = q.key;
+  showPage("quiz");
+  updateTop();
+  paintQuestion();
 }
 function renderDots(){
   $("dots").innerHTML = Array.from({length:ROUND_LEN},(_,k)=>{
@@ -494,36 +755,246 @@ function timeUp(){
   fb.innerHTML=`<div><b>Zeit um! ⏱️</b></div><div>Nicht gelöst.</div><div>${esc(q.text)}<b>${q.answer}</b></div><button type="button" class="next" id="nextBtn">Weiter ➜</button>`;
   $("nextBtn").onclick=()=>{ round.i++; nextQuestion(); };
 }
+function tagFor(q){
+  if(q.type && SA.NAMES[q.type]){
+    const icon = SA_ICON[q.type] || "📘";
+    return icon+" "+SA.NAMES[q.type]+(q.repeat?" · nochmal üben":"");
+  }
+  const names = {tage:"📅 Wochentage", plus:"➕ Plus", mal:"✖️ Einmaleins", blitz:"⚡ Blitz"};
+  return (round.mode==="mix" ? "🎲 " : "") + (names[q.mode]||"") + (q.repeat ? " · nochmal üben" : "");
+}
+function padHTML(){
+  return `<div class="pad">${[1,2,3,4,5,6,7,8,9].map(d=>`<button type="button" data-key="${d}">${d}</button>`).join("")}<button type="button" class="del" data-key="del" aria-label="Löschen">⌫</button><button type="button" data-key="0">0</button><button type="button" class="okk" data-key="ok">OK</button></div>`;
+}
+function hunderterHTML(n){
+  let cells="";
+  for(let i=1;i<=100;i++){
+    cells += i===n ? `<span class="hcell star" aria-label="gesuchte Zahl">⭐</span>` : `<span class="hcell">${i}</span>`;
+  }
+  return `<div class="hgrid" role="grid" aria-label="Hunderterfeld von 1 bis 100">${cells}</div>`;
+}
+function geheimHTML(q){
+  const g = SA.geheim(q.answer);
+  let strokes="", pips="";
+  for(let i=0;i<g.striche;i++) strokes+=`<i class="stroke"></i>`;
+  for(let i=0;i<g.punkte;i++) pips+=`<i class="pip"></i>`;
+  return `<div class="secret" aria-hidden="true"><div class="strokes">${strokes}</div><div class="pips">${pips}</div></div><p class="hintline">Strich = Zehner · Punkt = Einer</p>`;
+}
+function axisPct(n){ return (16 + (n/100)*(344-16))/360*100; }
+function axisSVG(from, to, marker, hit){
+  const W=360, H=82, L=16, R=344, y=34;
+  const x = n => L + (n-from)/(to-from)*(R-L);
+  let ticks="";
+  const span = to-from;
+  for(let n=from;n<=to;n++){
+    const xx=x(n);
+    const ten=n%10===0, five=n%5===0 && !ten;
+    const h = span<=10 ? (ten?20:12) : (ten?16: five?9:4);
+    ticks += `<line x1="${xx.toFixed(1)}" y1="${(y-h/2).toFixed(1)}" x2="${xx.toFixed(1)}" y2="${(y+h/2).toFixed(1)}" stroke="#1d2b3a" stroke-width="${ten?3:1.4}" stroke-linecap="round"/>`;
+    const label = span<=10 ? (n===from || n===to) : ten;
+    if(label) ticks += `<text x="${xx.toFixed(1)}" y="74" text-anchor="middle" font-size="${span<=10?14:11}" font-weight="800" fill="#1d2b3a">${n}</text>`;
+  }
+  const mx = x(Math.max(from, Math.min(to, marker)));
+  return `<svg viewBox="0 0 ${W} ${H}" class="axis${hit?" hit":""}" data-from="${from}" data-to="${to}" role="img" aria-label="Zahlenstrahl von ${from} bis ${to}"><line x1="${L}" y1="${y}" x2="${R}" y2="${y}" stroke="#1d2b3a" stroke-width="4" stroke-linecap="round"/>${ticks}<circle cx="${mx.toFixed(1)}" cy="${y}" r="7.5" fill="#f2545b" stroke="#fff" stroke-width="2"/></svg>`;
+}
+function strahlLesenHTML(q){
+  const d = SA.decadeOf(q.n);
+  const pct = axisPct(q.n).toFixed(2);
+  return `<div class="sky"><div class="balloon" style="left:${pct}%">?</div></div>${axisSVG(0,100,q.n,false)}<p class="hintline">Nahansicht</p>${axisSVG(d.lo,d.hi,q.n,false)}`;
+}
+function strahlLegenHTML(q){
+  const pct = axisPct(q.start).toFixed(2);
+  return `<div class="sky"><div class="balloon" id="balloon" style="left:${pct}%">${q.n}</div></div><div id="axisHost"></div><p class="hintline">Nahansicht</p><div id="zoomHost"></div><div class="stepper"><button type="button" data-step="-10" aria-label="zehn zurück">−10</button><button type="button" data-step="-1" aria-label="eins zurück">−1</button><button type="button" data-step="1" aria-label="eins weiter">+1</button><button type="button" data-step="10" aria-label="zehn weiter">+10</button></div><button type="button" class="next" id="strahlOk">Fertig ✔</button>`;
+}
+function paintMarker(){
+  if(!round || round.q.kind!=="strahl") return;
+  const n = round.marker;
+  const d = SA.decadeOf(n);
+  const host=$("axisHost"), zoom=$("zoomHost"), ball=$("balloon");
+  if(host) host.innerHTML = axisSVG(0,100,n,true);
+  if(zoom) zoom.innerHTML = axisSVG(d.lo, d.hi, n, true);
+  if(ball) ball.style.left = axisPct(n).toFixed(2)+"%";
+}
+function nudge(delta){
+  if(!round || round.answered || round.q.kind!=="strahl") return;
+  let n = round.marker + delta;
+  if(n<0) n=0; if(n>100) n=100;
+  round.marker = n;
+  paintMarker();
+}
+function ordnenHTML(q){
+  return `<div class="orderline" id="orderLine"><span class="orderph">klein → groß</span></div><div class="orderpool">${q.numbers.map((n,i)=>`<button type="button" class="obtn" data-ord="${i}">${n}</button>`).join("")}</div><button type="button" class="undo" id="ordUndo">↩ zurück</button>`;
+}
+function paintOrd(){
+  const line=$("orderLine"); if(!line) return;
+  const picked=round.picked||[];
+  if(!picked.length) line.innerHTML=`<span class="orderph">klein → groß</span>`;
+  else line.innerHTML = picked.map(i=>`<span class="ochip">${round.q.numbers[i]}</span>`).join(`<span class="olt">&lt;</span>`);
+  document.querySelectorAll(".obtn").forEach(b=>{
+    b.disabled = picked.indexOf(+b.getAttribute("data-ord"))>=0;
+  });
+}
+function vnHTML(q){
+  return `<div class="vnrow"><button type="button" class="vnbox on" data-vn="v"><span class="vnl">Vorgänger</span><b id="vnV">?</b><span class="vnh">davor</span></button><div class="vnmid"><span class="vnl">Zahl</span><b>${q.z}</b></div><button type="button" class="vnbox" data-vn="n"><span class="vnl">Nachfolger</span><b id="vnN">?</b><span class="vnh">danach</span></button></div>`+padHTML();
+}
+function paintVn(){
+  const v=$("vnV"), n=$("vnN");
+  if(v) v.textContent = round.vn.v==="" ? "?" : round.vn.v;
+  if(n) n.textContent = round.vn.n==="" ? "?" : round.vn.n;
+  document.querySelectorAll(".vnbox").forEach(b=>b.classList.toggle("on", b.getAttribute("data-vn")===round.vn.focus));
+}
+function fillFigure(html){
+  const f=$("figure");
+  f.className="figure";
+  f.innerHTML=html;
+}
+function clearFigure(){
+  const f=$("figure");
+  f.className="figure hidden";
+  f.innerHTML="";
+}
 function nextQuestion(){
   clearTimeout(advanceTimer);
   stopBlitz();
   if(round.i>=ROUND_LEN) return finishRound();
   const q = nextQ(round.mode, state, Math.random, lastKey);
-  lastKey = q.key; round.q=q; round.answered=false; round.input="";
+  lastKey = q.key;
+  round.q=q;
+  round.answered=false;
+  round.input="";
+  paintQuestion();
+}
+function paintQuestion(){
+  const q=round.q;
+  round.answered=false;
+  round.input="";
   renderDots();
-  $("qtag").textContent = (round.mode==="mix" ? "🎲 " : "") + {tage:"📅 Wochentage", plus:"➕ Plus", mal:"✖️ Einmaleins", blitz:"⚡ Blitz"}[q.mode] + (q.repeat ? " · nochmal üben" : "");
-  const p=$("prompt"); p.className = "prompt" + (q.kind==="zahl" ? " math" : ""); p.innerHTML = q.kind==="zahl" ? esc(q.text).replace(/ = $/," =") : q.text;
-  p.classList.remove("pop"); void p.offsetWidth; p.classList.add("pop");
-  $("fb").className="fb"; $("fb").innerHTML="";
+  $("fb").className="fb";
+  $("fb").innerHTML="";
   $("speakBtn").classList.toggle("hidden", !canSpeak());
+  clearFigure();
+  $("qtag").textContent = tagFor(q);
+  const p=$("prompt");
+  p.className="prompt";
   if(q.kind==="tag"){
+    p.innerHTML=q.text;
     $("mathArea").classList.add("hidden");
     round.dayOrder = shuffleDays(Math.random, round.dayOrder);
     $("answerArea").innerHTML = `<div class="days">${round.dayOrder.map(k=>`<button type="button" data-day="${k}">${TAGE[k]}</button>`).join("")}</div>`;
+  } else if(q.kind==="vergleich"){
+    p.className="prompt math cmprompt";
+    p.innerHTML=`<span class="cmp-n">${q.a|0}</span><span class="cmp-slot" id="cmpSlot">?</span><span class="cmp-n">${q.b|0}</span>`;
+    $("mathArea").classList.add("hidden");
+    $("answerArea").innerHTML=`<p class="hintline">Die Spitze zeigt zur kleineren Zahl.</p><div class="signs"><button type="button" class="signbtn" data-sign="<" aria-label="kleiner als"><span class="sign">&lt;</span><span class="signlbl">kleiner</span></button><button type="button" class="signbtn" data-sign=">" aria-label="größer als"><span class="sign">&gt;</span><span class="signlbl">größer</span></button></div>`;
+  } else if(q.kind==="ordnen"){
+    p.textContent=q.text;
+    $("mathArea").classList.add("hidden");
+    round.picked=[];
+    $("answerArea").innerHTML=ordnenHTML(q);
+  } else if(q.kind==="vn"){
+    p.textContent=q.text;
+    $("mathArea").classList.add("hidden");
+    round.vn={v:"", n:"", focus:"v"};
+    $("answerArea").innerHTML=vnHTML(q);
+  } else if(q.kind==="strahl"){
+    p.textContent=q.text;
+    $("mathArea").classList.add("hidden");
+    round.marker=q.start||0;
+    $("answerArea").innerHTML=strahlLegenHTML(q);
+    paintMarker();
   } else {
-    $("mathArea").classList.remove("hidden"); renderDisplay();
-    $("answerArea").innerHTML = `<div class="pad">${[1,2,3,4,5,6,7,8,9].map(d=>`<button type="button" data-key="${d}">${d}</button>`).join("")}<button type="button" class="del" data-key="del" aria-label="Löschen">⌫</button><button type="button" data-key="0">0</button><button type="button" class="okk" data-key="ok">OK</button></div>`;
+    const big = !q.type || q.type==="zehner";
+    p.className = "prompt"+(big?" math":"")+(q.type==="wort"?" word":"");
+    p.innerHTML = esc(q.text).replace(/ = $/," =");
+    if(q.type==="hunderter") fillFigure(hunderterHTML(q.answer));
+    else if(q.type==="geheim") fillFigure(geheimHTML(q));
+    else if(q.type==="strahl" && q.sub==="lesen") fillFigure(strahlLesenHTML(q));
+    $("mathArea").classList.remove("hidden");
+    renderDisplay();
+    $("answerArea").innerHTML = padHTML();
   }
+  p.classList.remove("pop"); void p.offsetWidth; p.classList.add("pop");
   startBlitzClock();
 }
-function renderDisplay(){ const d=$("display"); d.textContent=round.input; d.classList.toggle("empty", !round.input); }
+function renderDisplay(){ const d=$("display"); if(!d) return; d.textContent=round.input; d.classList.toggle("empty", !round.input); }
+function stellenBox(n){
+  const s=SA.stellen(n);
+  let rods="";
+  for(let i=0;i<s.h;i++) rods+=`<i class="rod hun"></i>`;
+  for(let i=0;i<s.z;i++) rods+=`<i class="rod"></i>`;
+  if(!s.h && !s.z) rods=`<span class="none">0</span>`;
+  let pips="";
+  for(let i=0;i<s.e;i++) pips+=`<i class="pip"></i>`;
+  if(!s.e) pips=`<span class="none">0</span>`;
+  return `<div class="stellen"><b>${n}</b><span class="rods">${rods}</span><span class="pips">${pips}</span></div>`;
+}
+function showGkState(fbK, val){
+  const slot=$("cmpSlot");
+  if(slot){ slot.textContent=fbK.sign; slot.classList.add("got","pop"); }
+  document.querySelectorAll(".signbtn").forEach(b=>{
+    const s=b.getAttribute("data-sign");
+    if(s===fbK.sign) b.classList.add("right");
+    else if(s===val) b.classList.add("wrong");
+    b.disabled=true;
+  });
+}
 $("answerArea").addEventListener("click", e=>{
   if(!round || round.answered) return;
   const day=e.target.closest("[data-day]"); if(day) return answer(+day.getAttribute("data-day"), day);
+  const sign=e.target.closest("[data-sign]"); if(sign) return answer(sign.getAttribute("data-sign"), sign);
+  const ord=e.target.closest("[data-ord]");
+  if(ord){
+    const i=+ord.getAttribute("data-ord");
+    if(round.picked.indexOf(i)>=0) return;
+    round.picked.push(i);
+    paintOrd();
+    if(round.picked.length===round.q.numbers.length) answer(round.picked.map(k=>round.q.numbers[k]));
+    return;
+  }
+  if(e.target.closest("#ordUndo")){
+    round.picked.pop();
+    paintOrd();
+    return;
+  }
+  const vn=e.target.closest("[data-vn]");
+  if(vn && round.q.kind==="vn"){ round.vn.focus=vn.getAttribute("data-vn"); paintVn(); return; }
+  const step=e.target.closest("[data-step]");
+  if(step && round.q.kind==="strahl") return nudge(+step.getAttribute("data-step"));
+  if(e.target.closest("#strahlOk")) return answer(round.marker);
+  const svg=e.target.closest("svg.hit");
+  if(svg && round.q.kind==="strahl"){
+    const rect=svg.getBoundingClientRect();
+    const px=(e.clientX-rect.left)/rect.width*360;
+    const from=+svg.getAttribute("data-from"), to=+svg.getAttribute("data-to");
+    let n=Math.round(from + (px-16)/(344-16)*(to-from));
+    if(n<from) n=from; if(n>to) n=to;
+    round.marker=n;
+    paintMarker();
+    return;
+  }
   const k=e.target.closest("[data-key]"); if(k) return padKey(k.getAttribute("data-key"));
 });
+function vnKey(k){
+  const f=round.vn.focus;
+  if(k==="del") round.vn[f]=String(round.vn[f]).slice(0,-1);
+  else if(k==="ok"){
+    if(round.vn.v==="" || round.vn.n===""){
+      round.vn.focus = round.vn.v==="" ? "v" : "n";
+      paintVn();
+      const box=document.querySelector('.vnbox.on');
+      if(box){ box.classList.remove("shake"); void box.offsetWidth; box.classList.add("shake"); }
+      return;
+    }
+    return answer({v:+round.vn.v, n:+round.vn.n});
+  } else if(String(round.vn[f]).length<3){
+    round.vn[f] = (round.vn[f]==="0" ? "" : round.vn[f]) + k;
+  }
+  paintVn();
+}
 function padKey(k){
-  if(!round || round.answered || round.q.kind!=="zahl") return;
+  if(!round || round.answered) return;
+  if(round.q.kind==="vn") return vnKey(k);
+  if(round.q.kind!=="zahl") return;
   if(k==="del") round.input = round.input.slice(0,-1);
   else if(k==="ok"){ if(round.input==="") { $("display").classList.remove("shake"); void $("display").offsetWidth; $("display").classList.add("shake"); return; } return answer(+round.input); }
   else if(round.input.length<3) round.input = (round.input==="0" ? "" : round.input) + k;
@@ -531,37 +1002,82 @@ function padKey(k){
 }
 document.addEventListener("keydown", e=>{
   if(!round || $("vQuiz").classList.contains("hidden")) return;
-  if(round.answered){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); nextQuestion(); } return; }
-  if(round.q.kind!=="zahl") return;
+  if(round.answered){
+    if(e.key==="Enter"||e.key===" "){
+      e.preventDefault();
+      const n=$("nextBtn");
+      if(n) n.click(); else { round.i++; nextQuestion(); }
+    }
+    return;
+  }
+  if(round.q.kind==="vergleich"){
+    if(e.key==="<"||e.key===","){ e.preventDefault(); answer("<"); }
+    else if(e.key===">"||e.key==="."){ e.preventDefault(); answer(">"); }
+    return;
+  }
+  if(round.q.kind==="strahl"){
+    if(e.key==="ArrowLeft"){ e.preventDefault(); nudge(e.shiftKey?-10:-1); }
+    else if(e.key==="ArrowRight"){ e.preventDefault(); nudge(e.shiftKey?10:1); }
+    else if(e.key==="Enter"){ e.preventDefault(); answer(round.marker); }
+    return;
+  }
+  if(round.q.kind!=="zahl" && round.q.kind!=="vn") return;
   if(/^[0-9]$/.test(e.key)) padKey(e.key);
   else if(e.key==="Backspace") padKey("del");
   else if(e.key==="Enter"){ e.preventDefault(); padKey("ok"); }
 });
 const LOB = ["Super! 🎉","Toll! ⭐","Klasse! 🌟","Richtig! 👍","Prima! 🎈","Spitze! 🚀","Genau! 😊","Wow! ✨"];
 const TROST = ["Fast! 💛","Nicht schlimm! 💛","Gleich nochmal! 💪"];
+function isRight(q, val){
+  if(q.type) return SA.check(q, val);
+  return val===q.answer;
+}
 function answer(val, btn){
   if(!round || round.answered) return;
   stopBlitz();
   const q=round.q; round.answered=true;
-  const ok = val===q.answer;
-  round.results[round.i]=ok; recordAnswer(q, ok);
-  if(ok){ state.punkte += 10; }
+  const ok = isRight(q, val);
+  round.results[round.i]=ok;
+  recordAnswer(q, ok);
+  if(ok) state.punkte += 10;
   save(); updateTop(); renderDots();
   const fb=$("fb");
   if(q.kind==="tag"){
     document.querySelectorAll("[data-day]").forEach(b=>{ const k=+b.getAttribute("data-day"); if(k===q.answer) b.classList.add("right"); else if(b===btn) b.classList.add("wrong"); b.disabled=true; });
-  } else { $("display").textContent = String(val); }
+  } else if(q.kind==="zahl" && $("display")) { $("display").textContent = String(val); }
+  if(q.type==="vergleich") showGkState(SA.feedbackVergleich(q, val), val);
+  if(!ok && q.kind==="strahl"){ round.marker=q.answer; paintMarker(); }
+  document.querySelectorAll("#answerArea button").forEach(b=>{ b.disabled=true; });
   if(ok){
-    fb.className="fb good show"; fb.innerHTML=`<b>${pick(LOB,Math.random)}</b> <span>+10 ⭐</span>`;
+    fb.className="fb good show";
+    if(q.type==="vergleich"){
+      const info=SA.feedbackVergleich(q, val);
+      fb.innerHTML=`<b>${esc(info.lead)}</b> <span>+10 ⭐</span><div class="gkeq">${info.eqHtml}</div><div>${esc(info.headline)}</div>`;
+    } else {
+      fb.innerHTML=`<b>${pick(LOB,Math.random)}</b> <span>+10 ⭐</span>`;
+    }
     confetti();
-    advanceTimer = setTimeout(()=>{ round.i++; nextQuestion(); }, 1300);
+    const wait = q.type==="vergleich" ? 2200 : 1300;
+    advanceTimer = setTimeout(()=>{ round.i++; nextQuestion(); }, wait);
   } else {
-    let sol;
-    if(q.kind==="tag"){
+    let lead, sol;
+    if(q.type==="vergleich"){
+      const info=SA.feedbackVergleich(q, val);
+      lead=esc(info.lead);
+      sol=`<div class="gkeq">${info.eqHtml}</div><div>${esc(info.reason)}</div><div class="stellenrow">${stellenBox(q.a)}${stellenBox(q.b)}</div><div class="stellenkey"><span><i class="rod"></i> Zehner</span><span><i class="pip"></i> Einer</span></div>`;
+    } else if(q.type){
+      lead="Schau mal 💛";
+      sol=esc(SA.hint(q));
+    } else if(q.kind==="tag"){
+      lead=pick(TROST,Math.random);
       const path = dayPath(q.start, q.n);
       sol = `Richtig ist: <b>${TAGE[q.answer]}</b><div class="week">${path.map((d,k)=>`<span class="${k===0?"st":k===path.length-1?"ans":"go"}">${TAGE[d].slice(0,2)}</span>`).join(q.n>0?"→":"←")}</div>`;
-    } else sol = `${esc(q.text)}<b>${q.answer}</b>`;
-    fb.className="fb soft show"; fb.innerHTML=`<div>${pick(TROST,Math.random)}</div><div>${sol}</div><button type="button" class="next" id="nextBtn">Weiter ➜</button>`;
+    } else {
+      lead=pick(TROST,Math.random);
+      sol = `${esc(q.text)}<b>${q.answer}</b>`;
+    }
+    fb.className="fb soft show";
+    fb.innerHTML=`<div><b>${lead}</b></div><div>${sol}</div><button type="button" class="next" id="nextBtn">Weiter ➜</button>`;
     $("nextBtn").onclick = ()=>{ round.i++; nextQuestion(); };
   }
 }
@@ -570,12 +1086,12 @@ function finishRound(){
   const offen = round.results.filter(x=>x==="timeout").length;
   const s = starsFor(r, ROUND_LEN);
   const m = state.modes[round.mode]; m.runden++; m.sterne+=s; if(s>m.best) m.best=s;
-  if(round.mode==="mix"){ m.n += ROUND_LEN; m.r += r; } // Gemischt zusätzlich als eigener Modus zählen
-  if(s===3) state.punkte += 20;                         // Bonus für 3 Sterne
+  if(round.mode==="mix"){ m.n += ROUND_LEN; m.r += r; }
+  if(s===3) state.punkte += 20;
   const neu = checkBadges(); save(); updateTop();
-  show("vResult");
+  showPage("result");
   $("resStars").innerHTML = [0,1,2].map(k=>`<span class="${k<s?"on":""}">⭐</span>`).join("");
-  $("resTitle").textContent = s===3 ? "Fantastisch! 🎉" : s===2 ? "Super gemacht! 🌟" : s===1 ? "Gut gemacht! 👍" : "Weiter üben! 💪";
+  $("resTitle").textContent = s===3 ? "Fantastisch!" : s===2 ? "Super gemacht!" : s===1 ? "Gut gemacht!" : "Weiter üben!";
   $("resText").innerHTML = `${r} von ${ROUND_LEN} richtig` + (offen ? ` · ${offen} nicht gelöst` : "") + (s===3 ? "<br>+20 Bonus ⭐" : "");
   $("resBadges").innerHTML = neu.map(b=>`<div class="newbadge pop">Neues Abzeichen: ${b.i} ${b.t}</div>`).join("");
   if(s>=2) confetti(40);
@@ -589,7 +1105,6 @@ function confetti(n){
 }
 function esc(s){ return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
 
-// ---------- Vorlesen (optional, Deutsch) ----------
 function canSpeak(){ return typeof window.speechSynthesis!=="undefined" && typeof window.SpeechSynthesisUtterance!=="undefined"; }
 let deVoice=null;
 function loadVoices(){ try{ const vs=speechSynthesis.getVoices()||[]; deVoice = vs.find(v=>/^de([-_]|$)/i.test(v.lang||"")) || null; }catch(e){} }
@@ -600,17 +1115,18 @@ function say(text){
   const u=new SpeechSynthesisUtterance(text); if(deVoice){ u.voice=deVoice; u.lang=deVoice.lang; } else u.lang="de-DE";
   u.rate=0.85; window.__lastUtterance=u; s.speak(u);
 }
-$("speakBtn").onclick = ()=>{ if(round && round.q) say(round.q.say.replace(/·/g," mal ")); };
+$("speakBtn").onclick = ()=>{ if(round && round.q && round.q.say) say(String(round.q.say).replace(/·/g," mal ")); };
 
 function applyAppVersion(){
   const ver = "v" + APP_VERSION;
-  document.title = "Übungs-App – 2. Klasse – " + ver;
-  $("title").textContent = "⭐ Übungs-App – " + ver;
+  document.title = "Übungs-App – " + ver;
+  $("title").textContent = "Übungs-App – " + ver;
+  if($("moreVer")) $("moreVer").textContent = "Übungs-App – " + ver;
 }
 window.UA = {TAGE, FOCUS, FOCUS_BASE, FOCUS_KEYS, OTHER_PLUS, shiftDay, dayPath, dayLevel, makeDayQ, makePlusQ, makeMalQ, makeBlitzQ, nextQ, starsFor, shuffleDays, isWeekSequence, defaultState, migrate, STORE_KEY, ROUND_LEN, APP_VERSION, BLITZ_DEFAULT_SEK, BLITZ_CHOICES, blitzSeconds, tickBlitz:paintBlitz,
-  get state(){ return state; }, get round(){ return round; }, setNow:f=>{ nowFn=f||(()=>Date.now()); }, dayStreak};
+  get state(){ return state; }, get round(){ return round; }, setNow:function(f){ nowFn=f||function(){ return Date.now(); }; }, dayStreak:dayStreak, preview:preview};
 applyAppVersion();
-renderStart();
+showPage("start");
 </script>
 </body>
 </html>
