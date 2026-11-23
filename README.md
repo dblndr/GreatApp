@@ -1,16 +1,42 @@
-# Übungs-App – 2. Klasse
+# Übungs-App – v0.2
 
-Kleine Übungs-App für Kinder der 2. Klasse, als einzelne HTML-Datei (`index.html`). Sie läuft im Browser auf iPhone, iPad und Laptop, ohne Anmeldung und ohne Internetverbindung nach dem Laden.
+Kleine Übungs-App für Kinder der 2. Klasse, als einzelne HTML-Seite (`index.html`) plus `schulaufgaben.js`. Sie läuft im Browser auf Handy, Tablet und Laptop, ohne Anmeldung. Nach dem Laden braucht sie kein Internet.
 
-## Modi
+Die Versionsnummer steht im Titel: **Übungs-App – v0.2**. Was sich geändert hat, steht in [CHANGELOG.md](CHANGELOG.md).
 
-- **📅 Wochentage:** Welcher Tag kommt nach/vor …? Morgen, übermorgen, gestern, vorgestern. „N Tage nach/vor …“, auch über das Wochenende hinweg. Die Fragen werden mit der Zeit schwieriger.
-- **➕ Plus bis 20:** Kopfrechnen mit Schwerpunkt auf den kniffligen Aufgaben 4+7, 4+8, 6+7, 6+8, 8+9, 7+9, 7+8, 3+8 und ihren Tauschaufgaben (etwa zwei Drittel der Aufgaben).
-- **✖️ Einmaleins:** kleines Einmaleins bis 10 · 10. Einzelne Reihen sind auf dem Startbildschirm wählbar.
-- **🎲 Gemischt:** alles durcheinander.
+## Schulaufgaben
 
-Eine Runde hat 10 Aufgaben. Danach gibt es bis zu 3 Sterne. Falsch gelöste Rechenaufgaben kommen öfter wieder, bis sie zweimal richtig gelöst wurden.
+Zahlen von 0 bis 100, jedes Mal neu gemischt:
+
+- Hunderterfeld ablesen
+- Geheimschrift (Strich = Zehner, Punkt = Einer)
+- Zahlwörter
+- Größer oder kleiner
+- Vorgänger und Nachfolger
+- Nach der Größe ordnen, bei der kleinsten Zahl anfangen
+- Zahlenstrahl: Zahl legen und Stelle ablesen
+- Bis zum nächsten Zehner ergänzen
+- Zahlenrätsel
+
+**Größer/kleiner** gibt es als eigenen Modus und kommt in „Alles gemischt“ am häufigsten. Die Zeichen sind groß. Bei einem Fehler zeigt die App, welche Zahl größer ist.
+
+## Täglich üben
+
+- **Wochentage:** nach, vor, morgen, übermorgen, gestern, vorgestern, auch ein paar Tage weiter. Die Tages-Buttons sind gemischt.
+- **Plus bis 20:** Schwerpunkt auf 4+7, 4+8, 6+7, 6+8, 8+9, 7+9, 7+8, 3+8 und den Tauschaufgaben.
+- **Einmaleins** bis 10·10. Reihen lassen sich aufklappen.
+- **Gemischt** aus diesen drei.
+- **Blitz-Rechner** mit Countdown. Ist die Zeit um, gilt die Aufgabe als nicht gelöst.
+
+Eine Runde hat 10 Aufgaben und bis zu 3 Sterne.
 
 ## Daten
 
-Punkte, Statistik und Abzeichen werden nur lokal im Browser gespeichert (`localStorage`, Schlüssel `uebungs-app-2kl-v1`). Es werden keine Daten übertragen.
+Punkte, Statistik und Abzeichen bleiben nur in diesem Browser (`localStorage`, Schlüssel `uebungs-app-2kl-v1`). Es werden keine Daten übertragen. Alte Speicherstände aus v0.1 bleiben lesbar.
+
+## Tests
+
+```bash
+npm install
+npm test
+```
